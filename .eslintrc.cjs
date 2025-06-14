@@ -5,6 +5,10 @@ module.exports = {
     es2021: true,
     node: true,
   },
+  rules: {
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-uses-react': 'off',
+  },
 
   /* ------------------------------------------------------------ parser */
   parser: '@typescript-eslint/parser',
@@ -41,13 +45,7 @@ module.exports = {
     react: { version: 'detect' },
     'import/resolver': {
       node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
-      typescript: {
-        project: './tsconfig.json',
-      },
-      alias: {
-        map: [['@', './src']],
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
-      },
+      typescript: { project: './tsconfig.json' },
     },
   },
 

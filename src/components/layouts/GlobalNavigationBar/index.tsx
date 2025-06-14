@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 
-import { ReactComponent as NotificationOffIcon } from '@/icons/notification-badge-off.svg';
-import { ReactComponent as ArrowBack } from '@/icons/arrow-back.svg';
+import { ReactComponent as NotificationOffIcon } from '@/assets/icons/notification-badge-off.svg';
+import { ReactComponent as ArrowBack } from '@/assets/icons/arrow-back.svg';
 import LogoImg from '@/assets/logo-renalguard.png?w=112;webp';
-import type {RootState} from 'src/store';
+import type { RootState } from '@/store';
 
 export type PageKind = 'logged-in' | 'landing' | 'nested';
 
@@ -18,7 +18,6 @@ export type GnbProps = {
 
 const Index = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
   const { user } = useSelector((s: RootState) => s.auth);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   /* ---------- helpers ---------- */
