@@ -12,8 +12,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    // Uncomment if you want full type-aware rules
-    // project: './tsconfig.json',
   },
 
   /* ----------------------------------------------------------- plugins */
@@ -35,17 +33,21 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
-    // 'plugin:@typescript-eslint/recommended-requiring-type-checking', // ← enable if you set parserOptions.project
-    'prettier', // keep Prettier last
+    'prettier',
   ],
 
   /* --------------------------------------------------------- settings */
   settings: {
     react: { version: 'detect' },
     'import/resolver': {
-      // so `import … from "@/components/Button"` resolves
       node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
-      typescript: {}, // uses tsconfig paths
+      typescript: {
+        project: './tsconfig.json',
+      },
+      alias: {
+        map: [['@', './src']],
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      },
     },
   },
 

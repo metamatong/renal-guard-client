@@ -4,5 +4,13 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-  "jsx": "react-jsx",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "types": ["vite/client", "node"],
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "moduleResolution": "bundler"
+  }
 }

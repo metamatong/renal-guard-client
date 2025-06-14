@@ -1,82 +1,69 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ShieldCheck } from 'lucide-react';
+import { FormEvent, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '@/store';
+import {loginThunk} from '@/store/authSlice.ts';
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
+  const [inputs, setInputs] = useState({ username: '', password: '' });
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const { status, error } = useSelector((s: RootState) => s.auth);
+
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // TODO: Add Firebase or other auth logic here
-    console.log('Signing in with:', { email, password });
-    if (!email || !password) {
-      setError('Please enter both email and password.');
-      return;
-    }
-    setError('');
-    // On successful sign-in:
-    navigate('/dashboard');
-  };
-
-  const handleNavigateToRegister = () => {
-    navigate('/register');
+    dispatch(loginThunk(inputs))
+      .unwrap()
+      .then(() => navigate('/'))
+      .catch(() => {/* error handled in slice */});
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <ShieldCheck className="w-16 h-16 text-blue-400 mx-auto mb-2" />
-          <h1 className="text-3xl font-bold">Welcome Back</h1>
-          <p className="text-gray-400">Sign in to access your dashboard.</p>
-        </div>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-sm rounded-xl bg-white p-8 shadow-md">
+        <h1 className="mb-4 text-center text-2xl font-semibold text-gray-700">
+          Login
+        </h1>
 
-        <form onSubmit={handleSignIn} className="bg-gray-800 shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
-          <div className="mb-4">
-            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-3 px-4 bg-gray-700 text-white border-gray-600 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-300 text-sm font-bold mb-2" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-3 px-4 bg-gray-700 text-white border-gray-600 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
-              id="password"
-              type="password"
-              placeholder="******************"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
-          <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full"
-              type="submit"
-            >
-              Sign In
-            </button>
-          </div>
-        </form>
-        <p className="text-center text-gray-500 text-sm">
-          Don't have an account?{' '}
-          <button onClick={handleNavigateToRegister} className="font-bold text-blue-400 hover:text-blue-300">
-            Register
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <input
+            name="username"
+            placeholder="Username"
+            onChange={(e) =>
+              setInputs({ ...inputs, username: e.target.value })
+            }
+            className="rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={(e) =>
+              setInputs({ ...inputs, password: e.target.value })
+            }
+            className="rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+
+          <button
+            type="submit"
+            disabled={status === 'loading'}
+            className="rounded-lg bg-indigo-500 py-2 text-white transition duration-200 hover:bg-indigo-600 disabled:opacity-50"
+          >
+            {status === 'loading' ? 'Logging in…' : 'Login'}
           </button>
-        </p>
+
+          {status === 'error' && (
+            <p className="text-center text-sm text-red-500">{error}</p>
+          )}
+
+          <span className="text-center text-sm text-gray-600">
+            No account?{' '}
+            <Link to="/register" className="text-indigo-500 hover:underline">
+              Register
+            </Link>
+          </span>
+        </form>
       </div>
     </div>
   );
