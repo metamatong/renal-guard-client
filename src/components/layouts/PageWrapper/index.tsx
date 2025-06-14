@@ -13,7 +13,7 @@ type Props = {
   };
 };
 
-const PageWrapper = ({ children, gnbProps, extraComponents }: Props) => {
+const PageWrapper = ({ children, gnbProps }: Props) => {
   const { pathname } = useLocation();
 
   /* --------------------------- scroll reset -------------------------- */
