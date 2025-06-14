@@ -16,11 +16,7 @@ export type GnbProps = {
   rightIconAction?: () => void;
 };
 
-const Index = ({
-                               pageKind,
-                               prevAction,
-                               rightIconAction,
-                             }: GnbProps) => {
+const Index = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
   const { user } = useSelector((s: RootState) => s.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,7 +32,7 @@ const Index = ({
           <img
             src={LogoImg}
             alt="RenalGuard logo"
-            className="h-7 w-auto" /* 28 px tall */
+            className="h-7 w-auto"
           />
         );
 
@@ -60,10 +56,10 @@ const Index = ({
 
   /* ---------- RIGHT SLOT ---------- */
   const rightNode = useMemo(() => {
-    if (pageKind === 'logged-in' && user && user.name)
+    if (pageKind === 'nested' && user && user.name)
       return (
         <button
-          onClick={rightIconAction}
+          // onClick={rightIconAction}
           aria-label="notifications"
           className={clsx(
             'flex items-center justify-center',
@@ -74,7 +70,6 @@ const Index = ({
         </button>
       );
 
-    // landing & nested → no right-hand icon
     return null;
   }, [pageKind, rightIconAction]);
 
