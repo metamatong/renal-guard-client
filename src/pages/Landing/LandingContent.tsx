@@ -1,13 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, BarChart2 } from 'lucide-react';
+import { BarChart2 } from 'lucide-react';
+import logo from '@/assets/renalguard-transparent.png';
 
 const LandingContent: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4 text-center">
-      <ShieldCheck className="w-24 h-24 text-blue-400 mb-4" />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-white p-4 text-center">
+      <img
+        src={logo}
+        alt="RenalGuard logo"
+        className="w-[180px] h-[180px] mb-4"
+      />
       <h1 className="text-5xl font-bold mb-2">RenalGuard</h1>
       <p className="text-2xl font-light mb-4">Snap. Scan. Stay Safe.</p>
       <p className="text-lg text-gray-400 max-w-md mb-8">
