@@ -1,7 +1,8 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loginThunk } from '@/store/authSlice';
+import type { FormEvent } from 'react';
 
 const SignIn = () => {
   const [inputs, setInputs] = useState({ username: '', password: '' });

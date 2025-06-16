@@ -7,9 +7,9 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "types": ["vite/client", "node"],
+    "types": ["vite/client", "node", "react", "react-dom"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
     },
     "moduleResolution": "bundler"
   }

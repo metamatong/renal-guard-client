@@ -1,7 +1,9 @@
-import { ReactNode, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import clsx from 'clsx';
-import GlobalNavigationBar, {GnbProps} from '@/components/layouts/GlobalNavigationBar';
+import GlobalNavigationBar from '@/components/layouts/GlobalNavigationBar';
+import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
 
 type Props = {
   children: ReactNode;

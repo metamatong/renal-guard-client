@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sun, Utensils, Lightbulb, User } from 'lucide-react';
+import { Utensils, Lightbulb, User } from 'lucide-react';
 
 // Mock data - replace with data from your state management/API
 const mockUserData = {
