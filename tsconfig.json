@@ -11,6 +11,7 @@
     "paths": {
       "@/*": ["src/*"],
     },
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "module": "ESNext"
   }
 }

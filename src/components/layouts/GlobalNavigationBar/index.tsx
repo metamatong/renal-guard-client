@@ -2,10 +2,12 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
+import { ArrowLeft as ArrowBack, BellOff as NotificationOffIcon } from 'lucide-react';
 
-import { ReactComponent as NotificationOffIcon } from '@/assets/icons/notification-badge-off.svg';
-import { ReactComponent as ArrowBack } from '@/assets/icons/arrow-back.svg';
-import LogoImg from '@/assets/logo-renalguard.png?w=112;webp';
+// Import raster image optimized via vite-imagetools: resize to width 112px and convert to WebP
+// Query parameters should be separated by '&'
+// Import raster image optimized via vite-imagetools: resize to width 112px, convert to WebP, and return URL
+import LogoImg from '@/assets/logo-renalguard.png?w=112&format=webp&as=src';
 import type { RootState } from '@/store';
 
 export type PageKind = 'logged-in' | 'landing' | 'nested';
