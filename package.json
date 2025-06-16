@@ -41,5 +41,9 @@
     "tailwindcss": "^4.1.10",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
+  },
+  "resolutions": {
+    "@types/react": "19.1.x",
+    "@types/react-dom": "19.1.x"
   }
 }
