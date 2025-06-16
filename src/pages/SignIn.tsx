@@ -1,15 +1,14 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '@/store';
-import {loginThunk} from '@/store/authSlice.ts';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { loginThunk } from '@/store/authSlice';
 
 const SignIn = () => {
   const [inputs, setInputs] = useState({ username: '', password: '' });
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { status, error } = useSelector((s: RootState) => s.auth);
+  const { status, error } = useAppSelector((s) => s.auth);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
