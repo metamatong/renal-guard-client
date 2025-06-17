@@ -17,9 +17,9 @@ const LandingPage: React.FC = () => {
   return (
     <PageWrapper
       gnbProps={gnbProps}
-      extraComponents={{ hasSignUpBanner: false }}
+      extraComponents={{ hasFooter: true, hasBottomNavigation: false }}
     >
-      <LandingContent />          {/* purely visual; keeps your Tailwind styles */}
+      <LandingContent />
     </PageWrapper>
   );
 };

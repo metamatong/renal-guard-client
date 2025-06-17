@@ -22,7 +22,7 @@
 
   color-scheme: light dark;
   color: rgba(0, 0, 0, 0.87);
-  background-color: #FFFFFF;
+  background-color: #E5E7EB;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -42,6 +42,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  justify-content: center;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;

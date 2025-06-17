@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import clsx from 'clsx';
 import {ArrowLeft as ArrowBack, BellOff as NotificationOffIcon} from 'lucide-react';
 
-import LogoImg from '@/assets/logo-renalguard.png?w=112&format=webp&as=src';
+import LogoImg from '@/assets/logo-renalguard.png?as=src';
 import type {RootState} from '@/store';
 
 
@@ -31,7 +31,7 @@ const Index = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
           <img
             src={LogoImg}
             alt="RenalGuard logo"
-            className="h-7 w-auto"
+            className="w-[112px] h-auto"
           />
         );
 

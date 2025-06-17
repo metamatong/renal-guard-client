@@ -9,7 +9,6 @@ type Props = {
   children: ReactNode;
   gnbProps?: GnbProps;
   extraComponents?: {
-    hasSignUpBanner?: boolean;
     hasFooter?: boolean;
     hasBottomNavigation?: boolean;
   };
@@ -23,7 +22,7 @@ const PageWrapper = ({ children, gnbProps }: Props) => {
 
   /* ----------------------------- render ------------------------------ */
   return (
-    <div className="bg-gray-200 min-h-screen">                     {/* Wrapper */}
+    <div className="bg-white min-h-[100dvh] h-full overflow-x-hidden border-2 border-red-500">
       <div
         className={clsx(
           'bg-white flex min-h-screen flex-col',
