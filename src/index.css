@@ -1,3 +1,4 @@
+@import "tailwindcss";
 /* ---- custom fonts ---------------------------------- */
 @font-face {
   font-family: 'Pretendard';
@@ -10,11 +11,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* --- project-specific tokens --- */
+@theme {
+  /* ── fonts ─────────────────── */
+  --font-sans: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+  --font-pretendard: "Pretendard", sans-serif;
+
+  /* ── gray tweaks ───────────── */
+  --color-gray-500: #6B7289;
+
+  --color-blue-50:  #C4DDFF;
+  --color-blue-100: #9BC5FF;
+  --color-blue-200: #73AEFF;
+  --color-blue-300: #4E99FF;
+  --color-blue-400: #2B83F7;
+  --color-blue-500: #2875DA;
+  --color-blue-600: #2367C1;
+  --color-blue-700: #1F5BAA;
+  --color-blue-800: #1A4D91;
+  --color-blue-900: #12386A;
+  --color-blue-950: #0A2C5A;
+}
+
 @layer base {
   html {
     font-family: 'Pretendard', sans-serif;
   }
 }
+
+
 
 :root {
   line-height: 1.5;
