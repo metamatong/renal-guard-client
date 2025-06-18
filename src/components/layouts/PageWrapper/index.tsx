@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import GlobalNavigationBar from '@/components/layouts/GlobalNavigationBar';
 import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
+import Footer from '@/components/layouts/Footer';
 
 type Props = {
   children: ReactNode;
@@ -14,7 +15,7 @@ type Props = {
   };
 };
 
-const PageWrapper = ({ children, gnbProps }: Props) => {
+const PageWrapper = ({ children, gnbProps, extraComponents }: Props) => {
   const { pathname } = useLocation();
 
   /* --------------------------- scroll reset -------------------------- */
@@ -33,7 +34,7 @@ const PageWrapper = ({ children, gnbProps }: Props) => {
         {/* ───────────────── Main layout pieces ───────────────── */}
         {gnbProps && <GlobalNavigationBar {...gnbProps} />}
         {children}
-        {/*{extraComponents?.hasFooter && <Footer />}*/}
+        {extraComponents?.hasFooter && <Footer />}
         {/*{extraComponents?.hasBottomNavigation && <BottomNavigation />}*/}
       </div>
     </div>
