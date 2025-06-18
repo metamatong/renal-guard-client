@@ -22,12 +22,12 @@ const PageWrapper = ({ children, gnbProps }: Props) => {
 
   /* ----------------------------- render ------------------------------ */
   return (
-    <div className="bg-white min-h-[100dvh] h-full overflow-x-hidden border-2 border-red-500">
+    <div className="bg-white min-h-[100dvh] h-full overflow-x-hidden">
       <div
         className={clsx(
           'bg-white flex min-h-screen flex-col',
           'mx-auto w-full',
-          'lg:max-w-[420px]'
+          'lg:max-w-[420px]',
         )}
       >
         {/* ───────────────── Main layout pieces ───────────────── */}

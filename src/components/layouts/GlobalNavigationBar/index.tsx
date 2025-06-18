@@ -16,7 +16,7 @@ export type GnbProps = {
   rightIconAction?: () => void;
 };
 
-const Index = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
+const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
   const { user } = useSelector((s: RootState) => s.auth);
   const navigate = useNavigate();
 
@@ -74,7 +74,7 @@ const Index = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
 
   /* ---------- render ---------- */
   return (
-    <header className="flex h-14 w-full items-center justify-between px-5">
+    <header className="flex h-14 w-full items-center justify-between px-[1em]">
       {/* ← left slot */}
       <div className="flex min-w-[28px] items-center">{leftNode}</div>
 
@@ -84,4 +84,4 @@ const Index = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
   );
 };
 
-export default Index;
+export default GlobalNavigationBar;
