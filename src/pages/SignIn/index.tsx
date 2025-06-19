@@ -12,7 +12,7 @@ import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
 
 const SignIn = () => {
   /* ---------- auth + nav ---------- */
-  const [inputs, setInputs] = useState({email: '', password: ''});
+  const [inputs, setInputs] = useState({username: '', password: ''});
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {status, error} = useAppSelector((s) => s.auth);
@@ -52,8 +52,8 @@ const SignIn = () => {
               <input
                 name='email'
                 placeholder='Email'
-                value={inputs.email}
-                onChange={(e) => setInputs({...inputs, email: e.target.value})}
+                value={inputs.username}
+                onChange={(e) => setInputs({...inputs, username: e.target.value})}
                 className={clsx(
                   'w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3',
                   'placeholder:text-gray-400 placeholder:text-[0.75rem]',
