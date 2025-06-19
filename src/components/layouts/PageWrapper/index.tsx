@@ -23,12 +23,17 @@ const PageWrapper = ({ children, gnbProps, extraComponents }: Props) => {
 
   /* ----------------------------- render ------------------------------ */
   return (
-    <div className="bg-white min-h-[100dvh] h-full overflow-x-hidden">
+    <div className={clsx(
+      'min-[421px]:max-w-[420px]',
+      'w-full',
+      'mx-auto',
+      'bg-white min-h-[100dvh] h-full overflow-x-hidden',
+    )}>
       <div
         className={clsx(
           'bg-white flex min-h-screen flex-col',
-          'mx-auto w-full',
-          'lg:max-w-[420px]',
+          'w-full',
+          'mx-auto',
         )}
       >
         {/* ───────────────── Main layout pieces ───────────────── */}

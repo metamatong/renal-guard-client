@@ -10,7 +10,7 @@ const LandingContent: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-white text-white text-center px-[1.25em] mt-[3.5em]">
+    <div className="flex flex-col items-center min-h-[calc(100vh-256px)] bg-white text-white text-center px-[1.1em] mt-[3.5em]">
       <p className="text-2xl font-semibold mb-4 text-gray-900">Snap. Scan. Stay Safe.</p>
       <p className="text-lg font-regular leading-tight
  text-gray-700 max-w-md">
@@ -22,16 +22,16 @@ const LandingContent: React.FC = () => {
         alt="RenalGuard logo"
         className="w-[11.25em] h-[11.25em] mt-[2em]"
       />
-      <div className="flex flex-col space-y-[0.5em] w-full max-w-xs mt-[2em]">
+      <div className="flex flex-col items-center space-y-[0.5em] w-full max-w-xs mt-[2em]">
         <button
           onClick={() => navigate('/scan')}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-lg transition-transform hover:scale-101"
+          className="w-[17.5em] bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-lg transition-transform hover:scale-101"
         >
           Start Checking
         </button>
         <button
           onClick={() => navigate('/dashboard')}
-          className="ring-[0.0625em] ring-inset ring-blue-800 border-blue-800 text-blue-800 font-bold rounded-lg text-lg transition-transform hover:scale-101 flex items-center justify-center"
+          className="w-[17.5em] ring-[0.0625em] ring-inset ring-blue-800 border-blue-800 text-blue-800 font-bold rounded-lg text-lg transition-transform hover:scale-101 flex items-center justify-center"
         >
           <BarChart2 className="w-5 h-5 mr-2" />
           Go to My Dashboard

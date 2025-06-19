@@ -5,8 +5,8 @@ import Scan from './pages/Scan.tsx';
 import Processing from './pages/Processing.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import Meal from './pages/Meal.tsx';
-import SignIn from './pages/SignIn.tsx';
 import LandingPage from '@/pages/Landing';
+import SignIn from '@/pages/SignIn';
 
 function App() {
   return (
