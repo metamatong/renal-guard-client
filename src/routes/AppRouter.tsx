@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import LandingPage from '@/pages/Landing';
 import SignIn from '@/pages/SignIn';
 import Register from '@/pages/Register';
@@ -8,18 +8,17 @@ import Dashboard from '@/pages/Dashboard';
 import Meal from '@/pages/Meal';
 
 
-export default function AppRouter() {
+export default function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<SignIn />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/scan" element={<Scan />} />
-        <Route path="/processing" element={<Processing />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/meal/:id" element={<Meal />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/scan" element={<Scan />} />
+      <Route path="/processing" element={<Processing />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/meal/:mealId" element={<Meal />} />
+      <Route path="*" element={<LandingPage />} />
+    </Routes>
   );
 }
