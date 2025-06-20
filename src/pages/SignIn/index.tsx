@@ -98,7 +98,7 @@ const SignIn = () => {
 
               {/* -------- error message -------- */}
               {status === 'error' && (
-                <p className={clsx('text-center text-sm text-red-500')}>{error}</p>
+                <p className={clsx('text-center text-sm text-red-300')}>{error}</p>
               )}
 
               {/* -------- link to register -------- */}
