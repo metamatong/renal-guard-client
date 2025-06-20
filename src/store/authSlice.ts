@@ -1,7 +1,7 @@
+import type {ActionReducerMapBuilder} from '@reduxjs/toolkit';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios, {AxiosError} from 'axios';
-import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
-import type {RootState} from '@/store/index.ts';
+
 
 export type User = { id: number; name: string; email: string };
 
