@@ -150,7 +150,9 @@ const Scan: React.FC = () => {
             <img
               src={CaptureImg}
               alt="Capture CTA"
-              className="w-[6em] h-auto"
+              className={clsx(
+                'w-[6em] h-auto'
+              )}
             />
           </button>
           <button
