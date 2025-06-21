@@ -1,6 +1,11 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import LandingPage from '@/pages/Landing';
 import SignIn from '@/pages/SignIn';
+import Register from '@/pages/Register.tsx';
+import Scan from '@/pages/Scan';
+import Processing from '@/pages/Processing.tsx';
+import Dashboard from '@/pages/Dashboard.tsx';
+import Meal from '@/pages/Meal.tsx';
 
 
 function App() {
