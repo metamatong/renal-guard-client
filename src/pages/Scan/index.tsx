@@ -82,7 +82,6 @@ const Scan: React.FC = () => {
   /* ---------- render ---------- */
   return (
     <PageWrapper
-      gnbProps={gnbProps}
       extraComponents={{ hasFooter: false, hasBottomNavigation: false }}
     >
       {/* same visual structure, now in the central band between nav + footer */}
@@ -158,9 +157,10 @@ const Scan: React.FC = () => {
           <button
             onClick={handleUpload}
             className={clsx(
-              'bg-white rounded-full text-gray-950 font-semibold',
+              'bg-white text-gray-950 font-semibold',
               'flex w-[15.25em] justify-center items-center',
-              'mt-8 px-8 py-2 gap-x-2 mb-[20em]'
+              'mt-8 px-8 py-2 gap-x-2 mb-[20em]',
+              'rounded-full'
             )}
           >
             Upload from Gallery
