@@ -1,11 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, Upload, X } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { Upload, X } from 'lucide-react';
+import clsx from 'clsx';
+import CaptureImg from '@/assets/capture-cta.png?as=src';
+
+
+import PageWrapper from '@/components/layouts/PageWrapper';
+import type { RootState } from '@/store';
+import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
 
 const Scan: React.FC = () => {
+  /* ---------- auth + nav ---------- */
+  const auth = useSelector((state: RootState) => state.auth);
+  const gnbProps = useMemo<GnbProps>(() => ({ pageKind: 'landing' }), [auth.user]);
+
   const navigate = useNavigate();
 
-  // refs for the <video> element and the file picker
+  // refs for <video> and file picker
   const videoRef = useRef<HTMLVideoElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -17,7 +29,7 @@ const Scan: React.FC = () => {
     const enableCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: 'environment' } }, // try back camera
+          video: { facingMode: { ideal: 'environment' } }, // back camera if possible
           audio: false,
         });
         streamRef.current = stream;
@@ -49,11 +61,7 @@ const Scan: React.FC = () => {
     // dataURL contains the PNG snapshot
     const dataURL = canvas.toDataURL('image/png');
 
-    // ‼️ TODO: send `dataURL` (or convert to Blob) to your backend
-    // dispatch(uploadImageThunk(dataURL)); // ← example using Redux Thunk
-    // await api.post('/scan', { image: dataURL });
-
-    // For now we just log and move on
+    // TODO: send `dataURL` (or a Blob) to your backend
     console.log('Captured image, length:', dataURL.length);
     navigate('/processing');
   };
@@ -67,56 +75,105 @@ const Scan: React.FC = () => {
 
     console.log('Selected file:', file.name);
 
-    // ‼️ TODO: upload `file` to backend
-    // dispatch(uploadImageThunk(file));
-
+    // TODO: upload `file` to backend
     navigate('/processing');
   };
 
+  /* ---------- render ---------- */
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
-      {/* ── header ───────────────────────────────────────── */}
-      <header className="flex justify-between items-center p-4 bg-gray-900 bg-opacity-50">
-        <h1 className="text-xl font-bold">Scan Your Meal</h1>
-        <button onClick={() => navigate(-1)} className="p-2 rounded-full bg-gray-800 hover:bg-gray-700">
-          <X className="w-6 h-6" />
-        </button>
-      </header>
-
-      {/* ── live camera preview ──────────────────────────── */}
-      <div className="flex-grow flex items-center justify-center bg-gray-800">
-        <div className="w-full max-w-md h-96 border-4 border-dashed border-gray-600 rounded-lg overflow-hidden flex items-center justify-center">
-          <video
-            ref={videoRef}
-            className="object-cover w-full h-full"
-            autoPlay
-            playsInline
-            muted
-          />
-        </div>
-      </div>
-
-      {/* ── footer controls ─────────────────────────────── */}
-      <footer className="p-4 flex flex-col items-center justify-center bg-gray-900 bg-opacity-50">
-        <button
-          onClick={handleScan}
-          className="w-20 h-20 bg-white rounded-full border-4 border-gray-500 flex items-center justify-center mb-4"
+    <PageWrapper
+      gnbProps={gnbProps}
+      extraComponents={{ hasFooter: false, hasBottomNavigation: false }}
+    >
+      {/* same visual structure, now in the central band between nav + footer */}
+      <div
+        className={clsx(
+          'flex flex-col flex-1 bg-black text-white',
+          'min-h-[calc(100vh-256px)]'
+        )}
+      >
+        {/* ── header ───────────────────────────────────────── */}
+        <header
+          className={clsx(
+            'flex justify-between items-center p-4',
+            'bg-blue-950'
+          )}
         >
-          <Camera className="w-10 h-10 text-gray-800" />
-        </button>
-        <button onClick={handleUpload} className="text-blue-400 font-semibold flex items-center">
-          <Upload className="w-5 h-5 mr-2" />
-          Upload from Gallery
-        </button>
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={onFileSelect}
-          className="hidden"
-          accept="image/*"
-        />
-      </footer>
-    </div>
+          <div className={'flex flex-col'}>
+            <span className={clsx('text-[1.75em] font-semibold')}>Scan Your Meal</span>
+            <span className={clsx('text-[0.875em] font-regular')}>Point your camera at your meal and capture it.</span>
+          </div>
+          <button
+            onClick={() => navigate(-1)}
+          >
+            <X className={clsx('w-6 h-6')} />
+          </button>
+        </header>
+
+        {/* ── live camera preview ──────────────────────────── */}
+        <div
+          className={clsx(
+            'flex items-center justify-center bg-blue-950',
+            'h-[30em]'
+          )}
+        >
+          <div
+            className={clsx(
+              'w-full max-w-md h-96 border-4 border-dashed border-blue-600',
+              'rounded-lg overflow-hidden flex items-center justify-center'
+            )}
+          >
+            <video
+              ref={videoRef}
+              className={clsx('object-cover w-full h-full')}
+              autoPlay
+              playsInline
+              muted
+            />
+          </div>
+        </div>
+
+        {/* ── footer controls ─────────────────────────────── */}
+        <footer
+          className={clsx(
+            'p-2 flex flex-grow flex-col items-center justify-center',
+            'bg-blue-950',
+          )}
+        >
+          <button
+            onClick={handleScan}
+            className={clsx(
+              'w-[6em] h-[6em]',
+              'flex items-center justify-center'
+            )}
+          >
+            <img
+              src={CaptureImg}
+              alt="Capture CTA"
+              className="w-[6em] h-auto"
+            />
+          </button>
+          <button
+            onClick={handleUpload}
+            className={clsx(
+              'bg-white rounded-full text-gray-950 font-semibold',
+              'flex w-[15.25em] justify-center items-center',
+              'mt-8 px-8 py-2 gap-x-2 mb-[20em]'
+            )}
+          >
+            Upload from Gallery
+            <Upload className={clsx('w-5 h-5')} />
+          </button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={onFileSelect}
+            className={clsx('hidden')}
+            accept="image/*"
+          />
+        </footer>
+      </div>
+    </PageWrapper>
   );
 };
 
