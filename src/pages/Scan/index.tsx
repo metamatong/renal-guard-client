@@ -11,10 +11,6 @@ import type { RootState } from '@/store';
 import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
 
 const Scan: React.FC = () => {
-  /* ---------- auth + nav ---------- */
-  const auth = useSelector((state: RootState) => state.auth);
-  const gnbProps = useMemo<GnbProps>(() => ({ pageKind: 'landing' }), [auth.user]);
-
   const navigate = useNavigate();
 
   // refs for <video> and file picker
