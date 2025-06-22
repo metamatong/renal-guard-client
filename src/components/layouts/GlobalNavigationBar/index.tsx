@@ -1,8 +1,8 @@
-import {useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import clsx from 'clsx';
-import {ArrowLeft as ArrowBack, BellOff as NotificationOffIcon} from 'lucide-react';
+import {ArrowLeft as ArrowBack, BellOff as NotificationOffIcon, User} from 'lucide-react';
 
 import LogoImg from '@/assets/logo-renalguard.png?as=src';
 import type {RootState} from '@/store';
@@ -37,9 +37,12 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
 
       case 'logged-in':
         return (
-          <span className="font-semibold text-sm text-gray-900">
-            Welcome&nbsp;back,&nbsp;{user?.name ?? 'Friend'}
-          </span>
+          <header className="flex items-center justify-between p-4">
+            <div>
+              <p className="text-[1em] font-semibold text-gray-400">Welcome back,</p>
+              <h1 className="text-[1.5em] text-blue-400 font-bold">Kyle</h1>
+            </div>
+          </header>
         );
 
       case 'nested':
@@ -74,7 +77,12 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
 
   /* ---------- render ---------- */
   return (
-    <header className="flex h-14 w-full items-center justify-between px-[1em]">
+    <header
+      className={clsx(
+        'flex w-full items-center justify-between',
+        pageKind === 'logged-in' ? 'h-[5em] bg-gray-100' : 'h-14 px-[1em]'
+      )}
+    >
       {/* ← left slot */}
       <div className="flex min-w-[28px] items-center">{leftNode}</div>
 
