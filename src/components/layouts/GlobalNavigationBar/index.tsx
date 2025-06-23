@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import clsx from 'clsx';
 import {ArrowLeft as ArrowBack, BellOff as NotificationOffIcon} from 'lucide-react';
@@ -28,11 +28,14 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
     switch (pageKind) {
       case 'landing':
         return (
-          <img
-            src={LogoImg}
-            alt="RenalGuard logo"
-            className="w-[112px] h-auto"
-          />
+          // TODO: The link should first figure out signin state and navigate to dashboard if signed in.
+          <Link to="/" aria-label="Home">
+            <img
+              src={LogoImg}
+              alt="RenalGuard logo"
+              className="w-[112px] h-auto"
+            />
+          </Link>
         );
 
       case 'logged-in':
