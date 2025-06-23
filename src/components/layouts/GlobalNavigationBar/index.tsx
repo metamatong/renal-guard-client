@@ -48,7 +48,7 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
       case 'nested':
         return (
           <ArrowBack
-            className="h-7 w-7 cursor-pointer"
+            className="h-7 w-7 cursor-pointer mx-[1em] mt-[1.5em]"
             onClick={goBack}
             role="button"
           />
@@ -80,8 +80,12 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
     <header
       className={clsx(
         'flex w-full items-center justify-between',
-        pageKind === 'logged-in' ? 'h-[5em] bg-gray-100' : 'h-14 px-[1em]'
-      )}
+        {
+          'h-[5em] bg-gray-100' : pageKind === 'logged-in',
+          'h-14 bg-gray-100'      : pageKind === 'nested',
+          'h-14 px-[1em]'      : pageKind === 'landing',
+        }
+        )}
     >
       {/* ← left slot */}
       <div className="flex min-w-[28px] items-center">{leftNode}</div>
