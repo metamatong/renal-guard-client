@@ -52,36 +52,78 @@ const Dashboard: React.FC = () => {
           {/* ── Nutrient Summary ─────────────────────────────────────────────── */}
           <section className='mb-6 rounded-lg bg-gray-200 p-4'>
             <div className='flex justify-center gap-[2em] text-center'>
-              {([
-                {key: 'sodium', label: 'Na\n(mg)', color: 'bg-[#9CA3AF]'},
-                {key: 'potassium', label: 'K\n(mg)', color: 'bg-[#FEC77B]'},
-                {key: 'phosphorus', label: 'PO\u2084\n(mg)', color: 'bg-[#C8A6F1]'},
-                {key: 'water', label: 'H\u2082O\n(ml)', color: 'bg-[#C4DDFF]'},
-                {key: 'protein', label: 'Pro\n(g)', color: 'bg-[#E39F96]'}
-              ]).map(({key, label, color}) => {
-                const value = mockUserData.nutrients[key as keyof typeof mockUserData.nutrients];
-                const ref = mockUserData.reference[key as keyof typeof mockUserData.reference];
+              {[
+                {
+                  key: 'sodium',
+                  symbol: 'Na',
+                  unit: 'mg',
+                  barColor: 'bg-[#9CA3AF]',
+                  symbolColor: 'text-[#E5E7EB]'
+                },
+                {
+                  key: 'potassium',
+                  symbol: 'K',
+                  unit: 'mg',
+                  barColor: 'bg-[#FEC77B]',
+                  symbolColor: 'text-[#FD6428]'
+                },
+                {
+                  key: 'phosphorus',
+                  symbol: 'PO\u2084',
+                  unit: 'mg',
+                  barColor: 'bg-[#C8A6F1]',
+                  symbolColor: 'text-[#2F12A4]'
+                },
+                {
+                  key: 'water',
+                  symbol: 'H\u2082O',
+                  unit: 'ml',
+                  barColor: 'bg-[#C4DDFF]',
+                  symbolColor: 'text-[#2875DA]'
+                },
+                {
+                  key: 'protein',
+                  symbol: 'Pro',
+                  unit: 'g',
+                  barColor: 'bg-[#E39F96]',
+                  symbolColor: 'text-[#7E352C]'
+                }
+              ].map(({key, symbol, unit, barColor, symbolColor}) => {
+                const value =
+                  mockUserData.nutrients[key as keyof typeof mockUserData.nutrients];
+                const ref =
+                  mockUserData.reference[key as keyof typeof mockUserData.reference];
 
                 return (
-                  <div key={key} className='flex flex-col w-[2.25em] items-center'>
+                  <div key={key} className='flex w-[2.25em] flex-col items-center'>
                     {/* pill-shaped bar */}
-                    <div className='relative h-32 w-9 rounded-t-[1.5em] rounded-b-[0.5em] bg-gray-300 overflow-hidden'>
+                    <div className='relative h-32 w-9 overflow-hidden rounded-t-[1.5em] rounded-b-[0.5em] bg-gray-300'>
                       {/* fill */}
                       <div
                         className={clsx(
                           'absolute bottom-0 left-0 w-full transition-all',
-                          'min-h-[5em]',
-                          color
+                          'min-h-[4em]',
+                          barColor
                         )}
-                        style={{ height: toPercent(value, ref) }}
+                        style={{height: toPercent(value, ref)}}
                       >
+                        {/* numeric value */}
                         <span className='absolute top-2 left-1/2 -translate-x-1/2 text-base font-bold text-gray-800'>
                           {value}
                         </span>
                       </div>
-                      <span className='absolute bottom-2 left-1/2 -translate-x-1/2 text-[1em] font-semibold text-gray-800'>
-                        {label}
-                      </span>
+                      {/* symbol + unit, stacked */}
+                      <div className='absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center leading-none'>
+                        <span
+                          className={clsx(
+                            'text-sm font-semibold',
+                            symbolColor
+                          )}
+                        >
+                          {symbol}
+                        </span>
+                        <span className='text-[0.6rem] text-gray-900'>{unit}</span>
+                      </div>
                     </div>
                   </div>
                 );
