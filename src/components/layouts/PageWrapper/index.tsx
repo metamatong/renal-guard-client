@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import GlobalNavigationBar from '@/components/layouts/GlobalNavigationBar';
 import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
 import Footer from '@/components/layouts/Footer';
+import BottomNavigationBar from '@/components/layouts/BottomNavigationBar';
+import {createPortal} from 'react-dom';
 
 type Props = {
   children: ReactNode;
@@ -40,7 +42,9 @@ const PageWrapper = ({ children, gnbProps, extraComponents }: Props) => {
         {gnbProps && <GlobalNavigationBar {...gnbProps} />}
         {children}
         {extraComponents?.hasFooter && <Footer />}
-        {/*{extraComponents?.hasBottomNavigation && <BottomNavigation />}*/}
+
+        {/* floating bottom nav */}
+        {extraComponents?.hasBottomNavigation && createPortal(<BottomNavigationBar /> as React.ReactNode, document.body)}
       </div>
     </div>
   );

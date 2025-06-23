@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
   );
 
   return (
-    <PageWrapper gnbProps={gnbProps} extraComponents={{hasFooter: true, hasBottomNavigation: false}}>
+    <PageWrapper gnbProps={gnbProps} extraComponents={{hasFooter: true, hasBottomNavigation: true}}>
       <div className='min-h-[calc(100vh-256px)] w-full bg-gray-100 text-gray-900'>
         <main className='p-4'>
           {/* ── Nutrient Summary ─────────────────────────────────────────────── */}
