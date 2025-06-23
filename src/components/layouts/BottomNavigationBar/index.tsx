@@ -3,19 +3,13 @@ import { NavLink } from 'react-router-dom';
 import { Camera, LayoutGrid, Utensils } from 'lucide-react';
 import clsx from 'clsx';
 
-/**
- * Floating bottom navigation bar with three actions:
- *  - Scan  (Camera)   → /scan
- *  - Home  (Grid)     → /
- *  - Meals (Utensils) → /meals
- */
 const BottomNavigationBar: React.FC = () => {
   const baseItem =
     'relative flex h-10 w-10 items-center justify-center rounded-full transition-colors';
 
   const activePill =
     'before:absolute before:inset-0 before:-z-10 before:rounded-full ' +
-    'before:bg-blue-600 before:animate-fade-in';
+    'before:bg-blue-300 before:animate-fade-in';
 
   return (
     <nav
@@ -31,11 +25,7 @@ const BottomNavigationBar: React.FC = () => {
           <NavLink
             to="/scan"
             className={({ isActive }) =>
-              clsx(
-                baseItem,
-                isActive && activePill,
-                'text-gray-300 hover:text-white'
-              )
+              clsx(baseItem, isActive && activePill, 'text-gray-300 hover:text-white')
             }
             aria-label="Scan meal"
           >
@@ -43,16 +33,13 @@ const BottomNavigationBar: React.FC = () => {
           </NavLink>
         </li>
 
-        {/* Home / Dashboard */}
+        {/* Home / Dashboard — highlight only on EXACT "/" */}
         <li>
           <NavLink
-            to="/"
+            to="/dashboard"
+            end                    /* ← key change */
             className={({ isActive }) =>
-              clsx(
-                baseItem,
-                isActive && activePill,
-                'text-gray-300 hover:text-white'
-              )
+              clsx(baseItem, isActive && activePill, 'text-gray-300 hover:text-white')
             }
             aria-label="Dashboard"
           >
@@ -63,13 +50,9 @@ const BottomNavigationBar: React.FC = () => {
         {/* Meals */}
         <li>
           <NavLink
-            to="/meals"
+            to="/meal"
             className={({ isActive }) =>
-              clsx(
-                baseItem,
-                isActive && activePill,
-                'text-gray-300 hover:text-white'
-              )
+              clsx(baseItem, isActive && activePill, 'text-gray-300 hover:text-white')
             }
             aria-label="Meals list"
           >
