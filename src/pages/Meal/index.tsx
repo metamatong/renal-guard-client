@@ -17,6 +17,7 @@ const mockMealData = {
     { name: 'Sodium', value: '250', unit: 'mg', status: 'safe' },
     { name: 'Potassium', value: '300', unit: 'mg', status: 'safe' },
     { name: 'Phosphorus', value: '200', unit: 'mg', status: 'warning' },
+    { name: 'Water', value: '1200', unit: 'ml', status: 'safe' },
     { name: 'Protein', value: '35', unit: 'g', status: 'safe' },
   ]
 };
