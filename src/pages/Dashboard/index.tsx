@@ -23,8 +23,9 @@ const mockUserData = {
     {id: 1, name: 'Chicken and Quinoa Bowl', time: '12:30 PM'},
     {id: 2, name: 'Oatmeal with Berries', time: '8:00 AM'}
   ],
+  dailyTipTitle: 'Drink, rinse, repeat.',
   dailyTip:
-    'Drink, rinse, repeat. Staying hydrated is essential for dialysis. This simple act can wash away toxins, ' +
+    'Staying hydrated is essential for dialysis. This simple act can wash away toxins, ' +
     'prevent cramping, and help your body maintain a stable temperature. Aim for 8 glasses to give yourself a boost.',
   reference: {
     sodium: 2000,
@@ -164,12 +165,13 @@ const Dashboard: React.FC = () => {
           </section>
 
           {/* Daily Renal Tips */}
-          <section>
-            <h2 className='mb-2 flex items-center text-lg font-bold'>
-              <Lightbulb className='mr-2 h-5 w-5 text-yellow-400' /> Daily Renal Tips
-            </h2>
+          <section className='flex flex-col gap-[0.5em] mb-6'>
+            <span className='mb-2 text-[1.25em] font-semibold'>
+              Daily Renal Tips
+            </span>
             <div className='rounded-lg bg-gray-200 p-4'>
-              <p className='text-gray-900'>{mockUserData.dailyTip}</p>
+              <p className='text-gray-950 text-[1em] font-semibold mb-1'>{mockUserData.dailyTipTitle}</p>
+              <p className='text-gray-500'>{mockUserData.dailyTip}</p>
             </div>
           </section>
         </main>
