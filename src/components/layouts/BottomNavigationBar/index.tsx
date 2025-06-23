@@ -14,7 +14,7 @@ const BottomNavigationBar: React.FC = () => {
   return (
     <nav
       className={clsx(
-        'fixed bottom-30 inset-x-0 mx-auto w-fit z-50',
+        'fixed bottom-20 inset-x-0 mx-auto w-fit z-50',
         'rounded-full bg-gray-900 px-5 py-3 shadow-lg'
       )}
       aria-label="Primary"
