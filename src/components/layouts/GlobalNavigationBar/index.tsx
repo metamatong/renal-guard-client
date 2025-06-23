@@ -1,8 +1,8 @@
-import React, {useMemo} from 'react';
+import {useMemo} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import clsx from 'clsx';
-import {ArrowLeft as ArrowBack, BellOff as NotificationOffIcon, User} from 'lucide-react';
+import {ArrowLeft as ArrowBack, BellOff as NotificationOffIcon} from 'lucide-react';
 
 import LogoImg from '@/assets/logo-renalguard.png?as=src';
 import type {RootState} from '@/store';
