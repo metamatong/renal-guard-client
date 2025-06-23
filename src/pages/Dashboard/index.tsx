@@ -1,12 +1,13 @@
 import React, {useMemo} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {Utensils, Lightbulb, User} from 'lucide-react';
+import {Link} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
 import PageWrapper from '@/components/layouts/PageWrapper';
 import type {RootState} from '@/store';
 import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
 import clsx from 'clsx';
+import ArrowImg from '@/assets/right-arrow-button.png?as=src';
+import MealImg from '@/assets/meal-photo.png?as=src';
 
 
 const mockUserData = {
@@ -40,7 +41,6 @@ const toPercent = (val: number, ref: number) =>
   `${Math.min(100, (val / ref) * 100)}%`;
 
 const Dashboard: React.FC = () => {
-  const navigate = useNavigate();
 
   const auth = useSelector((state: RootState) => state.auth);
   const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'logged-in'}), [auth.user]);
@@ -50,7 +50,7 @@ const Dashboard: React.FC = () => {
       new Intl.DateTimeFormat('en-GB', {
         day: 'numeric',
         month: 'long',
-        year: 'numeric',
+        year: 'numeric'
       }).format(new Date()),
     []
   );
@@ -61,8 +61,8 @@ const Dashboard: React.FC = () => {
         <main className='p-4'>
           {/* ── Nutrient Summary ─────────────────────────────────────────────── */}
 
-          <section className="mb-6 rounded-lg bg-gray-200 p-4">
-            <div className="flex justify-center gap-[2em] text-center">
+          <section className='mb-6 rounded-lg bg-gray-200 p-4'>
+            <div className='flex justify-center gap-[2em] text-center'>
               {[
                 {
                   key: 'sodium',
@@ -99,16 +99,16 @@ const Dashboard: React.FC = () => {
                   barColor: 'bg-[#E39F96]',
                   symbolColor: 'text-[#7E352C]'
                 }
-              ].map(({ key, symbol, unit, barColor, symbolColor }) => {
+              ].map(({key, symbol, unit, barColor, symbolColor}) => {
                 const value =
                   mockUserData.nutrients[key as keyof typeof mockUserData.nutrients];
                 const ref =
                   mockUserData.reference[key as keyof typeof mockUserData.reference];
 
                 return (
-                  <div key={key} className="flex w-[2.5em] flex-col items-center">
+                  <div key={key} className='flex w-[2.5em] flex-col items-center'>
                     {/* pill-shaped bar */}
-                    <div className="relative h-32 w-full overflow-hidden rounded-t-[1.5em] rounded-b-[0.5em] bg-gray-300">
+                    <div className='relative h-32 w-full overflow-hidden rounded-t-[1.5em] rounded-b-[0.5em] bg-gray-300'>
                       {/* fill */}
                       <div
                         className={clsx(
@@ -116,7 +116,7 @@ const Dashboard: React.FC = () => {
                           'min-h-[2.5em]',
                           barColor
                         )}
-                        style={{ height: toPercent(value, ref) }}
+                        style={{height: toPercent(value, ref)}}
                       >
                         {/* numeric value */}
                         <span className={clsx('absolute top-2 left-1/2 -translate-x-1/2 text-base font-bold', symbolColor)}>
@@ -126,11 +126,11 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     {/* symbol + unit */}
-                    <div className="mt-1 flex flex-col items-center leading-none">
+                    <div className='mt-1 flex flex-col items-center leading-none'>
                       <span className={clsx('text-sm font-semibold', symbolColor)}>
                         {symbol}
                       </span>
-                      <span className="text-[0.6rem] text-gray-400">{unit}</span>
+                      <span className='text-[0.6rem] text-gray-400'>{unit}</span>
                     </div>
                   </div>
                 );
@@ -138,28 +138,50 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* total cals */}
-            <div className="mt-4 mb-1 flex flex-col items-center justify-center">
-              <p className="text-lg font-bold">{mockUserData.calories} kcal</p>
-              <p className="text-sm text-gray-500">{todayStr}</p>
+            <div className='mt-4 mb-1 flex flex-col items-center justify-center'>
+              <p className='text-lg font-bold'>{mockUserData.calories} kcal</p>
+              <p className='text-sm text-gray-500'>{todayStr}</p>
             </div>
           </section>
 
           {/* Today's Food Check-in */}
-          <section className='flex flex-col gap-[0.5em] mb-6'>
+          <section className='flex flex-col gap-[0.5em] mb-6 rounded-lg bg-gray-200 p-4'>
             <span className='mb-2 text-[1.25em] font-semibold'>Today&apos;s Food Check-in</span>
             <div className='space-y-2'>
               {mockUserData.meals.map((meal) => (
-                <div
+                <Link
                   key={meal.id}
-                  onClick={() => navigate(`/meal/${meal.id}`)}
-                  className='flex cursor-pointer items-center justify-between rounded-lg bg-gray-200 p-4 hover:bg-gray-700'
+                  to={`/meal/${meal.id}`}
+                  className='flex items-center justify-between
+                   rounded-lg bg-gray-50 p-4
+                   hover:bg-gray-700 focus:outline-none
+                   focus:ring-2 focus:ring-blue-500'
                 >
-                  <div>
-                    <p className='font-semibold'>{meal.name}</p>
-                    <p className='text-sm text-gray-400'>{meal.time}</p>
+                  <div
+                    className={clsx(
+                      'flex gap-2 items-center'
+                    )}
+                  >
+                    <img
+                      src={MealImg}
+                      alt='Actual meal'
+                      className={clsx(
+                        'w-[2.25em] h-[2.25em]'
+                      )}
+                    />
+                    <div>
+                      <p className='font-semibold'>{meal.name}</p>
+                      <p className='text-sm text-gray-400'>{meal.time}</p>
+                    </div>
                   </div>
-                  <Utensils className='h-5 w-5 text-gray-500' />
-                </div>
+                  <img
+                    src={ArrowImg}
+                    alt='Arrow Button'
+                    className={clsx(
+                      'w-[2.25em] h-auto'
+                    )}
+                  />
+                </Link>
               ))}
             </div>
           </section>

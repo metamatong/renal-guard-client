@@ -1,14 +1,12 @@
-import React, { useEffect, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Upload, X } from 'lucide-react';
+import React, {useEffect, useRef} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {Upload, X} from 'lucide-react';
 import clsx from 'clsx';
 import CaptureImg from '@/assets/capture-cta.png?as=src';
 
 
 import PageWrapper from '@/components/layouts/PageWrapper';
-import type { RootState } from '@/store';
-import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
+
 
 const Scan: React.FC = () => {
   const navigate = useNavigate();
@@ -25,8 +23,8 @@ const Scan: React.FC = () => {
     const enableCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: 'environment' } }, // back camera if possible
-          audio: false,
+          video: {facingMode: {ideal: 'environment'}}, // back camera if possible
+          audio: false
         });
         streamRef.current = stream;
         if (videoRef.current) videoRef.current.srcObject = stream;
@@ -78,7 +76,7 @@ const Scan: React.FC = () => {
   /* ---------- render ---------- */
   return (
     <PageWrapper
-      extraComponents={{ hasFooter: false, hasBottomNavigation: false }}
+      extraComponents={{hasFooter: false, hasBottomNavigation: false}}
     >
       {/* same visual structure, now in the central band between nav + footer */}
       <div
@@ -132,7 +130,7 @@ const Scan: React.FC = () => {
         <footer
           className={clsx(
             'p-2 flex flex-grow flex-col items-center justify-center',
-            'bg-blue-950',
+            'bg-blue-950'
           )}
         >
           <button
@@ -144,7 +142,7 @@ const Scan: React.FC = () => {
           >
             <img
               src={CaptureImg}
-              alt="Capture CTA"
+              alt='Capture CTA'
               className={clsx(
                 'w-[6em] h-auto'
               )}
@@ -163,11 +161,11 @@ const Scan: React.FC = () => {
             <Upload className={clsx('w-5 h-5')} />
           </button>
           <input
-            type="file"
+            type='file'
             ref={fileInputRef}
             onChange={onFileSelect}
             className={clsx('hidden')}
-            accept="image/*"
+            accept='image/*'
           />
         </footer>
       </div>
