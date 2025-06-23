@@ -47,7 +47,7 @@ const BottomNavigationBar: React.FC = () => {
           </NavLink>
         </li>
 
-        {/* Meals */}
+        {/* Meal */}
         <li>
           <NavLink
             to="/meal"

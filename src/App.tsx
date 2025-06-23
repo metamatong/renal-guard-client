@@ -5,7 +5,7 @@ import Register from '@/pages/Register.tsx';
 import Scan from '@/pages/Scan';
 import Processing from '@/pages/Processing';
 import Dashboard from '@/pages/Dashboard';
-import Meal from '@/pages/Meal.tsx';
+import Meal from '@/pages/Meal';
 
 
 function App() {
