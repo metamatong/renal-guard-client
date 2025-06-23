@@ -1,7 +1,7 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import LandingPage from '@/pages/Landing';
 import SignIn from '@/pages/SignIn';
-import Register from '@/pages/Register.tsx';
+import Register from '@/pages/Register';
 import Scan from '@/pages/Scan';
 import Processing from '@/pages/Processing';
 import Dashboard from '@/pages/Dashboard';
