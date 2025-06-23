@@ -41,24 +41,34 @@ const toPercent = (val: number, ref: number) =>
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
-  /* ---------- GNB props (landing style) ---------- */
   const auth = useSelector((state: RootState) => state.auth);
   const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'logged-in'}), [auth.user]);
+
+  const todayStr = useMemo(
+    () =>
+      new Intl.DateTimeFormat('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }).format(new Date()),
+    []
+  );
 
   return (
     <PageWrapper gnbProps={gnbProps} extraComponents={{hasFooter: true, hasBottomNavigation: false}}>
       <div className='min-h-[calc(100vh-256px)] w-full bg-gray-100 text-gray-900'>
         <main className='p-4'>
           {/* ── Nutrient Summary ─────────────────────────────────────────────── */}
-          <section className='mb-6 rounded-lg bg-gray-200 p-4'>
-            <div className='flex justify-center gap-[2em] text-center'>
+
+          <section className="mb-6 rounded-lg bg-gray-200 p-4">
+            <div className="flex justify-center gap-[2em] text-center">
               {[
                 {
                   key: 'sodium',
                   symbol: 'Na',
                   unit: 'mg',
-                  barColor: 'bg-[#9CA3AF]',
-                  symbolColor: 'text-[#E5E7EB]'
+                  barColor: 'bg-gray-400',
+                  symbolColor: 'text-gray-700'
                 },
                 {
                   key: 'potassium',
@@ -88,42 +98,38 @@ const Dashboard: React.FC = () => {
                   barColor: 'bg-[#E39F96]',
                   symbolColor: 'text-[#7E352C]'
                 }
-              ].map(({key, symbol, unit, barColor, symbolColor}) => {
+              ].map(({ key, symbol, unit, barColor, symbolColor }) => {
                 const value =
                   mockUserData.nutrients[key as keyof typeof mockUserData.nutrients];
                 const ref =
                   mockUserData.reference[key as keyof typeof mockUserData.reference];
 
                 return (
-                  <div key={key} className='flex w-[2.25em] flex-col items-center'>
+                  <div key={key} className="flex w-[2.5em] flex-col items-center">
                     {/* pill-shaped bar */}
-                    <div className='relative h-32 w-9 overflow-hidden rounded-t-[1.5em] rounded-b-[0.5em] bg-gray-300'>
+                    <div className="relative h-32 w-full overflow-hidden rounded-t-[1.5em] rounded-b-[0.5em] bg-gray-300">
                       {/* fill */}
                       <div
                         className={clsx(
                           'absolute bottom-0 left-0 w-full transition-all',
-                          'min-h-[4em]',
+                          'min-h-[2.5em]',
                           barColor
                         )}
-                        style={{height: toPercent(value, ref)}}
+                        style={{ height: toPercent(value, ref) }}
                       >
                         {/* numeric value */}
-                        <span className='absolute top-2 left-1/2 -translate-x-1/2 text-base font-bold text-gray-800'>
+                        <span className={clsx('absolute top-2 left-1/2 -translate-x-1/2 text-base font-bold', symbolColor)}>
                           {value}
                         </span>
                       </div>
-                      {/* symbol + unit, stacked */}
-                      <div className='absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center leading-none'>
-                        <span
-                          className={clsx(
-                            'text-sm font-semibold',
-                            symbolColor
-                          )}
-                        >
-                          {symbol}
-                        </span>
-                        <span className='text-[0.6rem] text-gray-900'>{unit}</span>
-                      </div>
+                    </div>
+
+                    {/* symbol + unit */}
+                    <div className="mt-1 flex flex-col items-center leading-none">
+                      <span className={clsx('text-sm font-semibold', symbolColor)}>
+                        {symbol}
+                      </span>
+                      <span className="text-[0.6rem] text-gray-400">{unit}</span>
                     </div>
                   </div>
                 );
@@ -131,14 +137,15 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* total cals */}
-            <div className='my-4 flex items-center justify-center'>
-              <p className='text-lg font-bold'>{mockUserData.calories} kcal</p>
+            <div className="mt-4 mb-1 flex flex-col items-center justify-center">
+              <p className="text-lg font-bold">{mockUserData.calories} kcal</p>
+              <p className="text-sm text-gray-500">{todayStr}</p>
             </div>
           </section>
 
           {/* Today's Food Check-in */}
-          <section className='mb-6'>
-            <h2 className='mb-2 text-lg font-bold'>Today&apos;s Food Check-in</h2>
+          <section className='flex flex-col gap-[0.5em] mb-6'>
+            <span className='mb-2 text-[1.25em] font-semibold'>Today&apos;s Food Check-in</span>
             <div className='space-y-2'>
               {mockUserData.meals.map((meal) => (
                 <div
