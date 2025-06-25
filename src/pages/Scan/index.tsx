@@ -6,10 +6,13 @@ import CaptureImg from '@/assets/capture-cta.png?as=src';
 
 
 import PageWrapper from '@/components/layouts/PageWrapper';
+import {useAppDispatch} from '@/store/hooks';
+import {uploadImageThunk} from '@/store/scanSlice';
 
 
 const Scan: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   // refs for <video> and file picker
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -42,7 +45,7 @@ const Scan: React.FC = () => {
   }, []);
 
   /* ─────────── 2 ▹ take a snapshot ─────────── */
-  const handleScan = () => {
+  const handleScan = async () => {
     const video = videoRef.current;
     if (!video) return;
 
@@ -52,12 +55,14 @@ const Scan: React.FC = () => {
     const ctx = canvas.getContext('2d')!;
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // dataURL contains the PNG snapshot
     const dataURL = canvas.toDataURL('image/png');
-
-    // TODO: send `dataURL` (or a Blob) to your backend
-    console.log('Captured image, length:', dataURL.length);
-    navigate('/processing');
+    const base64 = dataURL.split(',')[1];
+    try {
+      await dispatch(uploadImageThunk(base64)).unwrap();
+      navigate('/processing');
+    } catch (error) {
+      console.error('[Scan] uploadImageThunk failed:', error);
+    }
   };
 
   /* ─────────── 3 ▹ gallery upload fallback ─────────── */
@@ -67,10 +72,18 @@ const Scan: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    console.log('Selected file:', file.name);
-
-    // TODO: upload `file` to backend
-    navigate('/processing');
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const dataURL = reader.result as string;
+      const base64 = dataURL.split(',')[1];
+      try {
+        await dispatch(uploadImageThunk(base64)).unwrap();
+        navigate('/processing');
+      } catch (error) {
+        console.error('[Scan] uploadImageThunk failed:', error);
+      }
+    }
+    reader.readAsDataURL(file);
   };
 
   /* ---------- render ---------- */
