@@ -60,9 +60,9 @@ const Scan: React.FC = () => {
         type: 'image/png',
       });
 
+      navigate('/processing');
       try {
         await dispatch(uploadImageThunk(file)).unwrap();
-        navigate('/processing');
       } catch (err) {
         console.error('[Scan] uploadImageThunk failed:', err);
       }
@@ -76,9 +76,9 @@ const Scan: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    navigate('/processing');
     try {
       await dispatch(uploadImageThunk(file)).unwrap();
-      navigate('/processing');
     } catch (err) {
       console.error('[Scan] uploadImageThunk failed:', err);
     }
