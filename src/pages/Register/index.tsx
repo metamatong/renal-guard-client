@@ -1,119 +1,161 @@
-import {useMemo, useState} from 'react';
-import {Link} from 'react-router-dom';
-import {useSelector} from 'react-redux';
-import clsx from 'clsx';
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import clsx from "clsx";
 
-import {useAppSelector} from '@/store/hooks';
-import PageWrapper from '@/components/layouts/PageWrapper';
-import type {RootState} from '@/store';
-import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
+import { useAppSelector } from "@/store/hooks";
+import PageWrapper from "@/components/layouts/PageWrapper";
+import type { RootState } from "@/store";
+import type { GnbProps } from "@/components/layouts/GlobalNavigationBar";
 
+import { supabase } from "../../supa/supabaseClient.ts";
 
 const Register = () => {
   /* ---------- auth + nav ---------- */
-  const [inputs, setInputs] = useState({username: '', password: ''});
-  const {status, error} = useAppSelector((s) => s.auth);
+  const [inputs, setInputs] = useState({ email: "", password: "" });
+  const { status, error } = useAppSelector((s) => s.auth);
+  // const [message, setMessage] = useState("");
 
   /* ---------- GNB props (landing style) ---------- */
   const auth = useSelector((state: RootState) => state.auth);
-  const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'landing'}), [auth.user]);
+  const gnbProps = useMemo<GnbProps>(
+    () => ({ pageKind: "landing" }),
+    [auth.user]
+  );
 
   /* ---------- submit handler ---------- */
-  const handleSubmit = () => {
+  const handleSubmit = async (e: React.FormEvent) => {
     // should handle register logic here
+    e.preventDefault();
+    const { data, error } = await supabase.auth.signUp(inputs);
+
+    if (error) console.log(error.message);
+    // setMessage("Check your email for confirmation.");
   };
 
   /* ---------- render ---------- */
   return (
-    <PageWrapper gnbProps={gnbProps} extraComponents={{hasFooter: true, hasBottomNavigation: false}}>
+    <PageWrapper
+      gnbProps={gnbProps}
+      extraComponents={{ hasFooter: true, hasBottomNavigation: false }}
+    >
       <div
         className={clsx(
-          'flex flex-1 items-center justify-center',
-          'bg-white min-h-[calc(100vh-256px)]'
+          "flex flex-1 items-center justify-center",
+          "bg-white min-h-[calc(100vh-256px)]"
         )}
       >
         {/* centred card */}
-        <div className={clsx('flex flex-1 items-center justify-center px-[2.625em]')}>
-          <div className={clsx('w-full max-w-sm rounded-xl bg-blue-600 p-4 shadow-md')}>
-            <span className={clsx('mb-4 block text-center text-[1em] font-semibold text-gray-50')}>
+        <div
+          className={clsx(
+            "flex flex-1 items-center justify-center px-[2.625em]"
+          )}
+        >
+          <div
+            className={clsx(
+              "w-full max-w-sm rounded-xl bg-blue-600 p-4 shadow-md"
+            )}
+          >
+            <span
+              className={clsx(
+                "mb-4 block text-center text-[1em] font-semibold text-gray-50"
+              )}
+            >
               Register
             </span>
 
-            <form className={clsx('flex flex-col gap-2')} onSubmit={handleSubmit}>
+            <form
+              className={clsx("flex flex-col gap-2")}
+              onSubmit={handleSubmit}
+            >
               {/* -------- email -------- */}
               <input
-                name='email'
-                placeholder='Email'
-                value={inputs.username}
-                onChange={(e) => setInputs({...inputs, username: e.target.value})}
+                name="email"
+                placeholder="Email"
+                value={inputs.email}
+                onChange={(e) =>
+                  setInputs({ ...inputs, email: e.target.value })
+                }
                 className={clsx(
-                  'w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3',
-                  'placeholder:text-gray-400 placeholder:text-[0.75rem]',
-                  'text-[0.75em]',
-                  'focus:outline-none focus:ring-1 focus:ring-sky-500'
+                  "w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3",
+                  "placeholder:text-gray-400 placeholder:text-[0.75rem]",
+                  "text-[0.75em]",
+                  "focus:outline-none focus:ring-1 focus:ring-sky-500"
                 )}
               />
 
               {/* -------- password -------- */}
               <input
-                type='password'
-                name='password'
-                placeholder='Password'
+                type="password"
+                name="password"
+                placeholder="Password"
                 value={inputs.password}
-                onChange={(e) => setInputs({...inputs, password: e.target.value})}
+                onChange={(e) =>
+                  setInputs({ ...inputs, password: e.target.value })
+                }
                 className={clsx(
-                  'w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3',
-                  'placeholder:text-gray-400 placeholder:text-[0.75rem]',
-                  'text-[0.75em]',
-                  'focus:outline-none focus:ring-1 focus:ring-sky-500'
+                  "w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3",
+                  "placeholder:text-gray-400 placeholder:text-[0.75rem]",
+                  "text-[0.75em]",
+                  "focus:outline-none focus:ring-1 focus:ring-sky-500"
                 )}
               />
 
               {/* -------- confirm password -------- */}
               <input
-                type='password'
-                name='password'
-                placeholder='Confrim Password'
+                type="password"
+                name="password"
+                placeholder="Confrim Password"
                 value={inputs.password}
-                onChange={(e) => setInputs({...inputs, password: e.target.value})}
+                onChange={(e) =>
+                  setInputs({ ...inputs, password: e.target.value })
+                }
                 className={clsx(
-                  'w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3',
-                  'placeholder:text-gray-400 placeholder:text-[0.75rem]',
-                  'text-[0.75em]',
-                  'focus:outline-none focus:ring-1 focus:ring-sky-500'
+                  "w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3",
+                  "placeholder:text-gray-400 placeholder:text-[0.75rem]",
+                  "text-[0.75em]",
+                  "focus:outline-none focus:ring-1 focus:ring-sky-500"
                 )}
               />
 
               {/* -------- submit button -------- */}
               <button
-                type='submit'
-                disabled={status === 'loading'}
+                type="submit"
+                disabled={status === "loading"}
                 className={clsx(
-                  'mt-[1em] w-full w-[12.75em] rounded-lg bg-blue-50 py-2 transition duration-200',
-                  'hover:bg-blue-300 disabled:opacity-50'
+                  "mt-[1em] w-full w-[12.75em] rounded-lg bg-blue-50 py-2 transition duration-200",
+                  "hover:bg-blue-300 disabled:opacity-50"
                 )}
               >
                 <span
                   className={clsx(
-                    'block text-center text-[0.75em] font-bold text-blue-900',
-                    'hover:text-white'
+                    "block text-center text-[0.75em] font-bold text-blue-900",
+                    "hover:text-white"
                   )}
                 >
-                  {status === 'loading' ? 'Logging in…' : 'Register'}
+                  {status === "loading" ? "Logging in…" : "Register"}
                 </span>
               </button>
 
               {/* -------- error message -------- */}
-              {status === 'error' && (
-                <p className={clsx('text-center text-sm text-red-300')}>{error}</p>
+              {status === "error" && (
+                <p className={clsx("text-center text-sm text-red-300")}>
+                  {error}
+                </p>
               )}
 
               {/* -------- link to signin -------- */}
-              <span className={clsx('mt-[0.5em] text-center text-[0.75em] font-medium text-gray-50')}>
-                Already have an account?{' '}
+              <span
+                className={clsx(
+                  "mt-[0.5em] text-center text-[0.75em] font-medium text-gray-50"
+                )}
+              >
+                Already have an account?{" "}
                 <Link
-                  to='/signin'
-                  className={clsx('font-semibold text-gray-50 hover:underline hover:text-gray-50')}
+                  to="/signin"
+                  className={clsx(
+                    "font-semibold text-gray-50 hover:underline hover:text-gray-50"
+                  )}
                 >
                   Login
                 </Link>
