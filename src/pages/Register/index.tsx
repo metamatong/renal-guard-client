@@ -8,10 +8,13 @@ import PageWrapper from "@/components/layouts/PageWrapper";
 import type { RootState } from "@/store";
 import type { GnbProps } from "@/components/layouts/GlobalNavigationBar";
 
-import { supabase } from "../../supa/supabaseClient.ts";
+// import { supabase } from "../../supa/supabaseClient.ts";
+import { useAuth } from "@/authprovider/AuthContext.tsx";
+import type { AuthError } from "@supabase/supabase-js";
 
 const Register = () => {
   /* ---------- auth + nav ---------- */
+  const { signUp } = useAuth();
   const [inputs, setInputs] = useState({ email: "", password: "" });
   const { status, error } = useAppSelector((s) => s.auth);
   // const [message, setMessage] = useState("");
@@ -27,10 +30,18 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     // should handle register logic here
     e.preventDefault();
-    const { data, error } = await supabase.auth.signUp(inputs);
+    // const { data, error } = await supabase.auth.signUp(inputs);
 
-    if (error) console.log(error.message);
+    // if (error) console.log(error.message);
+
     // setMessage("Check your email for confirmation.");
+    try {
+      await signUp(inputs);
+      console.log("User Registered");
+    } catch (err: unknown) {
+      const error = err as AuthError;
+      console.log(error.message);
+    }
   };
 
   /* ---------- render ---------- */
