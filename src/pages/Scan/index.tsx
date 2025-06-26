@@ -49,41 +49,39 @@ const Scan: React.FC = () => {
     const video = videoRef.current;
     if (!video) return;
 
+    /* draw current frame to an off-screen canvas */
     const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    const ctx = canvas.getContext('2d')!;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.getContext('2d')!.drawImage(video, 0, 0);
+    canvas.toBlob(async (blob) => {
+      if (!blob) return; // safety
+      const file = new File([blob], `capture-${Date.now()}.png`, {
+        type: 'image/png',
+      });
 
-    const dataURL = canvas.toDataURL('image/png');
-    const base64 = dataURL.split(',')[1];
-    try {
-      await dispatch(uploadImageThunk(base64)).unwrap();
-      navigate('/processing');
-    } catch (error) {
-      console.error('[Scan] uploadImageThunk failed:', error);
-    }
+      try {
+        await dispatch(uploadImageThunk(file)).unwrap();
+        navigate('/processing');
+      } catch (err) {
+        console.error('[Scan] uploadImageThunk failed:', err);
+      }
+    }, 'image/png');
   };
 
   /* ─────────── 3 ▹ gallery upload fallback ─────────── */
   const handleUpload = () => fileInputRef.current?.click();
 
-  const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const dataURL = reader.result as string;
-      const base64 = dataURL.split(',')[1];
-      try {
-        await dispatch(uploadImageThunk(base64)).unwrap();
-        navigate('/processing');
-      } catch (error) {
-        console.error('[Scan] uploadImageThunk failed:', error);
-      }
+    try {
+      await dispatch(uploadImageThunk(file)).unwrap();
+      navigate('/processing');
+    } catch (err) {
+      console.error('[Scan] uploadImageThunk failed:', err);
     }
-    reader.readAsDataURL(file);
   };
 
   /* ---------- render ---------- */
