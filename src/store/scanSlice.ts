@@ -1,6 +1,6 @@
-import type {ActionReducerMapBuilder} from '@reduxjs/toolkit'
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import axios, {AxiosError} from 'axios'
+import type {ActionReducerMapBuilder} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import axios from 'axios';
 
 
 export type ScanResponse = {

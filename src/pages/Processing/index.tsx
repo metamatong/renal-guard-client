@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import clsx from 'clsx';
 import CancelImg from '@/assets/cancel-button.png?as=src';
 import LoadingImg from '@/assets/loading-image.png?as=src';
 import PageWrapper from '@/components/layouts/PageWrapper';
+
 
 const Processing: React.FC = () => {
   const navigate = useNavigate();
