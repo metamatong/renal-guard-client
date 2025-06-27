@@ -1,6 +1,7 @@
-import React, {useMemo} from 'react';
-import {Link} from 'react-router-dom';
+import React, {useMemo, useEffect} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import {useAppSelector} from '@/store/hooks';
+import {useAuth} from '@/authprovider/AuthContext.tsx';
 
 import PageWrapper from '@/components/layouts/PageWrapper';
 import type {RootState} from '@/store';
@@ -41,9 +42,16 @@ const toPercent = (val: number, ref: number) =>
   `${Math.min(100, (val / ref) * 100)}%`;
 
 const Dashboard: React.FC = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/signin');
+    }
+  }, [loading, user, navigate]);
 
   const analysis = useAppSelector((state: RootState) => state.scan.result?.analysis);
-  const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'logged-in'}), []);
+  const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'logged-in'}), [user]);
 
   const todayStr = useMemo(
     () =>

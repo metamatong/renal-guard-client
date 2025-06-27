@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useAuth} from '@/authprovider/AuthContext.tsx';
 import {Upload, X} from 'lucide-react';
 import clsx from 'clsx';
 import CaptureImg from '@/assets/capture-cta.png?as=src';
@@ -12,6 +13,7 @@ import {uploadImageThunk} from '@/store/scanSlice';
 
 const Scan: React.FC = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const dispatch = useAppDispatch();
 
   // refs for <video> and file picker
@@ -23,6 +25,10 @@ const Scan: React.FC = () => {
 
   /* ─────────── 1 ▹ turn the camera on when the page mounts ─────────── */
   useEffect(() => {
+    if (!loading && !user) {
+      navigate('/signin');
+      return;
+    }
     const enableCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({

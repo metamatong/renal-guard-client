@@ -1,8 +1,10 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import MealImg from '@/assets/meal-photo.png?as=src';
 import PageWrapper from '@/components/layouts/PageWrapper';
 import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
 import clsx from 'clsx';
+import { useAuth } from '@/authprovider/AuthContext.tsx';
 
 
 const mockMealData = {
@@ -21,6 +23,13 @@ const mockMealData = {
 };
 
 const Meal: React.FC = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/signin');
+    }
+  }, [loading, user, navigate]);
   // const { mealId } = useParams(); // Gets the ID from the URL, e.g., /meal/1
   const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'nested'}), []);
 
