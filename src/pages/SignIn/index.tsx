@@ -82,8 +82,8 @@ const SignIn = () => {
                 }
                 className={clsx(
                   "w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3",
-                  "placeholder:text-gray-400 placeholder:text-[0.75rem]",
-                  "text-[0.75em]",
+                  "placeholder:text-gray-400 placeholder:text-[1rem]",
+                  "text-[1em]",
                   "focus:outline-none focus:ring-1 focus:ring-sky-500"
                 )}
               />
@@ -99,8 +99,8 @@ const SignIn = () => {
                 }
                 className={clsx(
                   "w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3",
-                  "placeholder:text-gray-400 placeholder:text-[0.75rem]",
-                  "text-[0.75em]",
+                  "placeholder:text-gray-400 placeholder:text-[1rem]",
+                  "text-[1em]",
                   "focus:outline-none focus:ring-1 focus:ring-sky-500"
                 )}
               />
