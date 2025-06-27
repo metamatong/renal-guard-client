@@ -1,6 +1,6 @@
 import type {FormEvent} from 'react';
 import {useMemo, useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import clsx from 'clsx';
 
 import PageWrapper from '@/components/layouts/PageWrapper';
@@ -18,6 +18,7 @@ const SignIn = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   /* ---------- GNB props (landing style) ---------- */
+  const navigate = useNavigate();
   const gnbProps = useMemo<GnbProps>(
     () => ({ pageKind: "landing" }),
     []
@@ -30,6 +31,7 @@ const SignIn = () => {
     setSubmitError(null);
     try {
       await signIn(inputs);
+      navigate('/dashboard');
     } catch (err: unknown) {
       setSubmitError((err as AuthError).message);
     } finally {
