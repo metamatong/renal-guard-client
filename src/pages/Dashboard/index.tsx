@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react';
 import {Link} from 'react-router-dom';
-import {useSelector} from 'react-redux';
 import {useAppSelector} from '@/store/hooks';
 
 import PageWrapper from '@/components/layouts/PageWrapper';
@@ -43,9 +42,8 @@ const toPercent = (val: number, ref: number) =>
 
 const Dashboard: React.FC = () => {
 
-  const auth = useSelector((state: RootState) => state.auth);
   const analysis = useAppSelector((state: RootState) => state.scan.result?.analysis);
-  const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'logged-in'}), [auth.user]);
+  const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'logged-in'}), []);
 
   const todayStr = useMemo(
     () =>

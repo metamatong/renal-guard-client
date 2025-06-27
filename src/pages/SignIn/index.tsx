@@ -1,32 +1,27 @@
-import { useMemo, useState } from "react";
-import type { FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import clsx from "clsx";
+import type {FormEvent} from 'react';
+import {useMemo, useState} from 'react';
+import {Link} from 'react-router-dom';
+import clsx from 'clsx';
 
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-// import { loginThunk } from "@/store/authSlice";
-import PageWrapper from "@/components/layouts/PageWrapper";
-import type { RootState } from "@/store";
-import type { GnbProps } from "@/components/layouts/GlobalNavigationBar";
+import {useAppSelector} from '@/store/hooks';
+import PageWrapper from '@/components/layouts/PageWrapper';
+import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
 
-// import { supabase } from "../../supa/supabaseClient.ts";
-import type { AuthError } from "@supabase/supabase-js";
-import { useAuth } from "@/authprovider/AuthContext.tsx";
+import type {AuthError} from '@supabase/supabase-js';
+import {useAuth} from '@/authprovider/AuthContext.tsx';
+
 
 const SignIn = () => {
   /* ---------- auth + nav ---------- */
   const { signIn } = useAuth();
   const [inputs, setInputs] = useState({ email: "", password: "" });
   // const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { status, error } = useAppSelector((s) => s.auth);
 
   /* ---------- GNB props (landing style) ---------- */
-  const auth = useSelector((state: RootState) => state.auth);
   const gnbProps = useMemo<GnbProps>(
     () => ({ pageKind: "landing" }),
-    [auth.user]
+    []
   );
 
   /* ---------- submit handler ---------- */

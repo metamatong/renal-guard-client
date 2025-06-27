@@ -2,8 +2,6 @@ import React, {useMemo} from 'react';
 import MealImg from '@/assets/meal-photo.png?as=src';
 import PageWrapper from '@/components/layouts/PageWrapper';
 import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
-import {useSelector} from 'react-redux';
-import type {RootState} from '@/store';
 import clsx from 'clsx';
 
 
@@ -24,8 +22,7 @@ const mockMealData = {
 
 const Meal: React.FC = () => {
   // const { mealId } = useParams(); // Gets the ID from the URL, e.g., /meal/1
-  const auth = useSelector((state: RootState) => state.auth);
-  const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'nested'}), [auth.user]);
+  const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'nested'}), []);
 
   // In a real app, you would have a useEffect hook here to fetch meal data
   // using the mealId. For now, we use mock data.

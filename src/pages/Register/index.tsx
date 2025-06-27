@@ -1,16 +1,14 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import clsx from "clsx";
+import {useMemo, useState} from 'react';
+import {Link} from 'react-router-dom';
+import clsx from 'clsx';
 
-import { useAppSelector } from "@/store/hooks";
-import PageWrapper from "@/components/layouts/PageWrapper";
-import type { RootState } from "@/store";
-import type { GnbProps } from "@/components/layouts/GlobalNavigationBar";
+import {useAppSelector} from '@/store/hooks';
+import PageWrapper from '@/components/layouts/PageWrapper';
+import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
 
-// import { supabase } from "../../supa/supabaseClient.ts";
-import { useAuth } from "@/authprovider/AuthContext.tsx";
-import type { AuthError } from "@supabase/supabase-js";
+import {useAuth} from '@/authprovider/AuthContext.tsx';
+import type {AuthError} from '@supabase/supabase-js';
+
 
 const Register = () => {
   /* ---------- auth + nav ---------- */
@@ -20,10 +18,9 @@ const Register = () => {
   // const [message, setMessage] = useState("");
 
   /* ---------- GNB props (landing style) ---------- */
-  const auth = useSelector((state: RootState) => state.auth);
   const gnbProps = useMemo<GnbProps>(
     () => ({ pageKind: "landing" }),
-    [auth.user]
+    []
   );
 
   /* ---------- submit handler ---------- */
