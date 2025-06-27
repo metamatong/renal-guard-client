@@ -1,20 +1,19 @@
-import {useMemo, useState} from 'react';
-import {Link} from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-
-import {useAppSelector} from '@/store/hooks';
 import PageWrapper from '@/components/layouts/PageWrapper';
-import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
+import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
 
-import {useAuth} from '@/authprovider/AuthContext.tsx';
-import type {AuthError} from '@supabase/supabase-js';
+import { useAuth } from '@/authprovider/AuthContext.tsx';
+import type { AuthError } from '@supabase/supabase-js';
 
 
 const Register = () => {
   /* ---------- auth + nav ---------- */
   const { signUp } = useAuth();
   const [inputs, setInputs] = useState({ email: "", password: "" });
-  const { status, error } = useAppSelector((s) => s.auth);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   // const [message, setMessage] = useState("");
 
   /* ---------- GNB props (landing style) ---------- */
@@ -32,12 +31,15 @@ const Register = () => {
     // if (error) console.log(error.message);
 
     // setMessage("Check your email for confirmation.");
+    setSubmitting(true);
+    setSubmitError(null);
     try {
       await signUp(inputs);
       console.log("User Registered");
     } catch (err: unknown) {
-      const error = err as AuthError;
-      console.log(error.message);
+      setSubmitError((err as AuthError).message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -129,7 +131,7 @@ const Register = () => {
               {/* -------- submit button -------- */}
               <button
                 type="submit"
-                disabled={status === "loading"}
+                disabled={submitting}
                 className={clsx(
                   "mt-[1em] w-full w-[12.75em] rounded-lg bg-blue-50 py-2 transition duration-200",
                   "hover:bg-blue-300 disabled:opacity-50"
@@ -141,14 +143,14 @@ const Register = () => {
                     "hover:text-white"
                   )}
                 >
-                  {status === "loading" ? "Logging in…" : "Register"}
+                  {submitting ? "Registering…" : "Register"}
                 </span>
               </button>
 
               {/* -------- error message -------- */}
-              {status === "error" && (
+              {submitError && (
                 <p className={clsx("text-center text-sm text-red-300")}>
-                  {error}
+                  {submitError}
                 </p>
               )}
 

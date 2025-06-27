@@ -1,11 +1,10 @@
-import {useMemo} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import { useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/authprovider/AuthContext.tsx';
 import clsx from 'clsx';
 import {ArrowLeft as ArrowBack, BellOff as NotificationOffIcon} from 'lucide-react';
 
 import LogoImg from '@/assets/logo-renalguard.png?as=src';
-import type {RootState} from '@/store';
 
 
 export type PageKind = 'logged-in' | 'landing' | 'nested';
@@ -17,7 +16,7 @@ export type GnbProps = {
 };
 
 const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
-  const { user } = useSelector((s: RootState) => s.auth);
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   /* ---------- helpers ---------- */
@@ -43,7 +42,9 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
           <header className="flex items-center justify-between p-4">
             <div>
               <p className="text-[1em] font-semibold text-gray-400">Welcome back,</p>
-              <h1 className="text-[1.5em] text-blue-400 font-bold">Kyle</h1>
+              <h1 className="text-[1.5em] text-blue-400 font-bold">
+                {user?.user_metadata?.name ?? user?.email}
+              </h1>
             </div>
           </header>
         );
@@ -57,11 +58,11 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
           />
         );
     }
-  }, [pageKind, user?.name]);
+  }, [pageKind, user?.user_metadata?.name, user?.email]);
 
   /* ---------- RIGHT SLOT ---------- */
   const rightNode = useMemo(() => {
-    if (pageKind === 'nested' && user && user.name)
+    if (pageKind === 'nested' && user && (user.user_metadata?.name || user.email))
       return (
         <button
           // onClick={rightIconAction}
@@ -76,7 +77,7 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
       );
 
     return null;
-  }, [pageKind, rightIconAction]);
+  }, [pageKind, rightIconAction, user?.user_metadata?.name, user?.email]);
 
   /* ---------- render ---------- */
   return (

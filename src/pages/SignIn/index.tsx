@@ -3,7 +3,6 @@ import {useMemo, useState} from 'react';
 import {Link} from 'react-router-dom';
 import clsx from 'clsx';
 
-import {useAppSelector} from '@/store/hooks';
 import PageWrapper from '@/components/layouts/PageWrapper';
 import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
 
@@ -15,8 +14,8 @@ const SignIn = () => {
   /* ---------- auth + nav ---------- */
   const { signIn } = useAuth();
   const [inputs, setInputs] = useState({ email: "", password: "" });
-  // const dispatch = useAppDispatch();
-  const { status, error } = useAppSelector((s) => s.auth);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   /* ---------- GNB props (landing style) ---------- */
   const gnbProps = useMemo<GnbProps>(
@@ -27,18 +26,14 @@ const SignIn = () => {
   /* ---------- submit handler ---------- */
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // dispatch(loginThunk(inputs))
-    //   .unwrap()
-    //   .then(() => navigate("/"))
-    //   .catch(() => {}); // error already handled in slice
-
-    // const { data, error } = await supabase.auth.signInWithPassword(inputs);
-    // if (error) console.log(error.message);
+    setSubmitting(true);
+    setSubmitError(null);
     try {
       await signIn(inputs);
     } catch (err: unknown) {
-      const error = err as AuthError;
-      console.log(error.message);
+      setSubmitError((err as AuthError).message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -113,7 +108,7 @@ const SignIn = () => {
               {/* -------- submit button -------- */}
               <button
                 type="submit"
-                disabled={status === "loading"}
+                disabled={submitting}
                 className={clsx(
                   "mt-[1em] w-full w-[12.75em] rounded-lg bg-blue-50 py-2 transition duration-200",
                   "hover:bg-blue-300 disabled:opacity-50"
@@ -125,14 +120,14 @@ const SignIn = () => {
                     "hover:text-white"
                   )}
                 >
-                  {status === "loading" ? "Logging in…" : "Login"}
+                  {submitting ? "Logging in…" : "Login"}
                 </span>
               </button>
 
               {/* -------- error message -------- */}
-              {status === "error" && (
+              {submitError && (
                 <p className={clsx("text-center text-sm text-red-300")}>
-                  {error}
+                  {submitError}
                 </p>
               )}
 
