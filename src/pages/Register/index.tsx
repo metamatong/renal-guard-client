@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PageWrapper from '@/components/layouts/PageWrapper';
 import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
@@ -17,6 +17,7 @@ const Register = () => {
   // const [message, setMessage] = useState("");
 
   /* ---------- GNB props (landing style) ---------- */
+  const navigate = useNavigate();
   const gnbProps = useMemo<GnbProps>(
     () => ({ pageKind: "landing" }),
     []
@@ -40,6 +41,7 @@ const Register = () => {
     try {
       await signUp(inputs);
       console.log("User Registered");
+      navigate('/register/confirm');
     } catch (err: unknown) {
       setSubmitError((err as AuthError).message);
     } finally {
