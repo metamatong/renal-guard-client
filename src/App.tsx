@@ -2,6 +2,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import LandingPage from '@/pages/Landing';
 import SignIn from '@/pages/SignIn';
 import Register from '@/pages/Register';
+import Confirm from '@/pages/Register/Confirm.tsx';
 import Scan from '@/pages/Scan';
 import Processing from '@/pages/Processing';
 import Dashboard from '@/pages/Dashboard';
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/register/confirm" element={<Confirm />} />
         <Route path="/scan" element={<Scan />} />
         <Route path="/processing" element={<Processing />} />
         <Route path="/dashboard" element={<Dashboard />} />

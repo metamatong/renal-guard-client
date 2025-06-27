@@ -11,7 +11,7 @@ import type { AuthError } from '@supabase/supabase-js';
 const Register = () => {
   /* ---------- auth + nav ---------- */
   const { signUp } = useAuth();
-  const [inputs, setInputs] = useState({ email: "", password: "" });
+  const [inputs, setInputs] = useState({ email: "", password: "", confirmPassword: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   // const [message, setMessage] = useState("");
@@ -31,6 +31,10 @@ const Register = () => {
     // if (error) console.log(error.message);
 
     // setMessage("Check your email for confirmation.");
+    if (inputs.password !== inputs.confirmPassword) {
+      setSubmitError('Passwords do not match');
+      return;
+    }
     setSubmitting(true);
     setSubmitError(null);
     try {
@@ -114,11 +118,11 @@ const Register = () => {
               {/* -------- confirm password -------- */}
               <input
                 type="password"
-                name="password"
-                placeholder="Confrim Password"
-                value={inputs.password}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={inputs.confirmPassword}
                 onChange={(e) =>
-                  setInputs({ ...inputs, password: e.target.value })
+                  setInputs({ ...inputs, confirmPassword: e.target.value })
                 }
                 className={clsx(
                   "w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3",
