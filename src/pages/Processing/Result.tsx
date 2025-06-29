@@ -17,7 +17,7 @@ const Result: React.FC = () => {
 
   useEffect(() => {
     if (result) {
-      const timer = setTimeout(() => navigate('/dashboard'), 800000);
+      const timer = setTimeout(() => navigate('/dashboard'), 8000);
       return () => clearTimeout(timer);
     }
   }, [result, navigate]);
