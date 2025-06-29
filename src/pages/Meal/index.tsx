@@ -1,20 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import MealImg from "@/assets/meal-photo.png?as=src";
 import PageWrapper from "@/components/layouts/PageWrapper";
 import type { GnbProps } from "@/components/layouts/GlobalNavigationBar";
 import clsx from "clsx";
 import { useAuth } from "@/authprovider/AuthContext.tsx";
-
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchMealHistory } from '@/store/historySlice';
 
 const MealList: React.FC = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-
-  /** Entire meal history for the selected day (or all available rows). */
-  const [meals, setMeals] = useState<
-    Array<{ id: number; created_at: string; content: string }>
-  >([]);
+  const dispatch = useAppDispatch();
+  const { meals, status, error } = useAppSelector(state => state.history);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -23,29 +21,16 @@ const MealList: React.FC = () => {
   }, [loading, user, navigate]);
 
   useEffect(() => {
-    if (loading || !user) return;
-
-    (async () => {
-      try {
-        // current UTC time in ISO 8601 (e.g. "2025-06-29T06:12:30.123Z")
-        const timestamp = new Date().toISOString();
-
-        const url =
-          `${import.meta.env.VITE_AWS_HISTORY_ENDPOINT}` +
-          `?uid=${user.id}&timestamp=${encodeURIComponent(timestamp)}`;
-
-        const resp = await fetch(url);
-        const json = await resp.json();
-        setMeals(Array.isArray(json.results) ? json.results : []);
-      } catch (err) {
-        console.error('[MealList] fetch failed', err);
-      }
-    })();
-  }, [loading, user]);
+    if (user && !loading) {
+      dispatch(fetchMealHistory({ uid: user.id }));
+    }
+  }, [loading, user, dispatch]);
 
   const gnbProps = useMemo<GnbProps>(() => ({ pageKind: "nested" }), []);
 
   if (loading || !user) return null;
+  if (status === "loading") return <p className="text-center">Loading…</p>;
+  if (status === "error") return <p className="text-center text-red-500">Error: {error}</p>;
 
   return (
     <PageWrapper gnbProps={gnbProps} extraComponents={{ hasFooter: false, hasBottomNavigation: true }}>
