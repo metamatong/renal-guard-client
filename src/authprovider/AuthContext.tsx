@@ -1,7 +1,6 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
-import {supabase} from '../supa/supabaseClient.ts';
-import type {Session, User} from '@supabase/supabase-js';
-
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../supa/supabaseClient.ts";
+import type { Session, User } from "@supabase/supabase-js";
 
 interface AuthContextType {
   user: User | null;
@@ -15,6 +14,7 @@ interface AuthContextType {
 interface AuthCredentials {
   email: string;
   password: string;
+  username: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -52,7 +52,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Register
   const signUp = async (inputs: AuthCredentials) => {
-    const { error } = await supabase.auth.signUp(inputs);
+    const { email, password, username } = inputs;
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          username, // this will be stored in `auth.users.raw_user_meta_data`
+        },
+      },
+    });
+    // const { error } = await supabase.auth.signUp(inputs);
     if (error) throw error;
   };
 

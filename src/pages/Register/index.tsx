@@ -1,27 +1,28 @@
-import { useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import clsx from 'clsx';
-import PageWrapper from '@/components/layouts/PageWrapper';
-import type { GnbProps } from '@/components/layouts/GlobalNavigationBar';
+import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import clsx from "clsx";
+import PageWrapper from "@/components/layouts/PageWrapper";
+import type { GnbProps } from "@/components/layouts/GlobalNavigationBar";
 
-import { useAuth } from '@/authprovider/AuthContext.tsx';
-import type { AuthError } from '@supabase/supabase-js';
-
+import { useAuth } from "@/authprovider/AuthContext.tsx";
+import type { AuthError } from "@supabase/supabase-js";
 
 const Register = () => {
   /* ---------- auth + nav ---------- */
   const { signUp } = useAuth();
-  const [inputs, setInputs] = useState({ email: "", password: "", confirmPassword: "" });
+  const [inputs, setInputs] = useState({
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   // const [message, setMessage] = useState("");
 
   /* ---------- GNB props (landing style) ---------- */
   const navigate = useNavigate();
-  const gnbProps = useMemo<GnbProps>(
-    () => ({ pageKind: "landing" }),
-    []
-  );
+  const gnbProps = useMemo<GnbProps>(() => ({ pageKind: "landing" }), []);
 
   /* ---------- submit handler ---------- */
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,7 +34,7 @@ const Register = () => {
 
     // setMessage("Check your email for confirmation.");
     if (inputs.password !== inputs.confirmPassword) {
-      setSubmitError('Passwords do not match');
+      setSubmitError("Passwords do not match");
       return;
     }
     setSubmitting(true);
@@ -41,7 +42,7 @@ const Register = () => {
     try {
       await signUp(inputs);
       console.log("User Registered");
-      navigate('/register/confirm');
+      navigate("/register/confirm");
     } catch (err: unknown) {
       setSubmitError((err as AuthError).message);
     } finally {
@@ -84,6 +85,22 @@ const Register = () => {
               className={clsx("flex flex-col gap-2")}
               onSubmit={handleSubmit}
             >
+              {/* -------- username -------- */}
+              <input
+                name="username"
+                placeholder="Username"
+                value={inputs.username}
+                onChange={(e) =>
+                  setInputs({ ...inputs, username: e.target.value })
+                }
+                className={clsx(
+                  "w-full rounded-lg bg-gray-50 border-1 border-gray-300 px-4 py-3",
+                  "placeholder:text-gray-400 placeholder:text-[1rem]",
+                  "text-[1em]",
+                  "focus:outline-none focus:ring-1 focus:ring-sky-500"
+                )}
+              />
+
               {/* -------- email -------- */}
               <input
                 name="email"
