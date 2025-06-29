@@ -22,7 +22,7 @@ function App() {
         <Route path="/processing" element={<Processing />} />
         <Route path="/result" element={<Result />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/meal/:mealId" element={<Meal />} />
+        <Route path="/meal" element={<Meal />} />
         <Route path="*" element={<LandingPage />} />
       </Routes>
     </BrowserRouter>

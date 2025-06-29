@@ -24,11 +24,11 @@ const Result: React.FC = () => {
 
   // parse API response
   const imgUrl = result?.imgUrl || MealImg;
-  const foods = result?.openAIResponse?.split('\n').filter(Boolean) || [];
+  const foods: string[] = result?.openAIResponse?.split('\n').filter(Boolean) || [];
   const nutrients = result?.analysisResponse
     ?.split('\n')
     .filter(Boolean)
-    .map(line => {
+    .map((line: string) => {
       const [rawName, ...rest] = line.split(',');
       return {name: rawName.trim(), value: rest.join(',').trim()};
     }) || [];
@@ -60,7 +60,7 @@ const Result: React.FC = () => {
             <div className='w-full max-w-md text-left'>
               <p className='mb-2 font-semibold'>Identified Foods</p>
               <ul className='list-disc list-inside space-y-1'>
-                {foods.map(food => (
+                {foods.map((food: string) => (
                   <li key={food} className='text-gray-800'>{food}</li>
                 ))}
               </ul>
@@ -72,7 +72,7 @@ const Result: React.FC = () => {
             <div className='w-full max-w-md'>
               <p className='mb-2 font-semibold text-left'>Estimated Nutritional Content</p>
               <div className='flex flex-wrap gap-2'>
-                {nutrients.map(({name, value}) => {
+                {nutrients.map(({name, value}: {name: string; value: string}) => {
                   const key = name.toLowerCase();
                   const cfg = colors[key] || {symbol: name, bg: 'bg-gray-200', text: 'text-gray-700'};
                   const isCal = key === 'calories';
