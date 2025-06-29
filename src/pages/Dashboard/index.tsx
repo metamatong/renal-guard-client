@@ -1,7 +1,8 @@
 import React, {useMemo, useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {useAppSelector} from '@/store/hooks';
+import {useAppDispatch, useAppSelector} from '@/store/hooks';
 import {useAuth} from '@/authprovider/AuthContext.tsx';
+import {fetchMealHistory} from '@/store/historySlice';
 
 import PageWrapper from '@/components/layouts/PageWrapper';
 import type {RootState} from '@/store';
@@ -9,12 +10,8 @@ import type {GnbProps} from '@/components/layouts/GlobalNavigationBar';
 import clsx from 'clsx';
 import ArrowImg from '@/assets/right-arrow-button.png?as=src';
 import MealImg from '@/assets/meal-photo.png?as=src';
+import {dailyRenalTips} from '@/assets/renalTips.tsx';
 
-
-const dailyTipTitle = 'Drink, rinse, repeat.';
-const dailyTip =
-  'Staying hydrated is essential for dialysis. This simple act can wash away toxins, ' +
-  'prevent cramping, and help your body maintain a stable temperature. Aim for 8 glasses to give yourself a boost.';
 
 const reference = {
   sodium: 2000,
@@ -30,11 +27,17 @@ const toPercent = (val: number, ref: number) =>
 const Dashboard: React.FC = () => {
   const {user, loading} = useAuth();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  // redirect if unauthenticated
   useEffect(() => {
-    if (!loading && !user) {
-      navigate('/signin');
-    }
+    if (!loading && !user) navigate('/signin');
   }, [loading, user, navigate]);
+
+  const { title: dailyTipTitle, message: dailyTip } = useMemo(() => {
+    const today = new Date();
+    const index = today.getDate() % dailyRenalTips.length;
+    return dailyRenalTips[index];
+  }, []);
 
   const analysis = useAppSelector((state: RootState) => state.scan.result?.analysis);
   const meals = useAppSelector((state: RootState) => state.history.meals);
@@ -50,6 +53,13 @@ const Dashboard: React.FC = () => {
     [meals]
   );
   const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'logged-in'}), [user]);
+
+  // initial fetch of today's meals if not already loaded
+  useEffect(() => {
+    if (user && !loading && meals.length === 0) {
+      dispatch(fetchMealHistory({uid: user.id}));
+    }
+  }, [user, loading, meals.length, dispatch]);
 
   const todayStr = useMemo(
     () =>
