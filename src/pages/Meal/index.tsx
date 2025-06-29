@@ -32,14 +32,18 @@ const MealList: React.FC = () => {
   if (status === "loading") return <p className="text-center">Loading…</p>;
   if (status === "error") return <p className="text-center text-red-500">Error: {error}</p>;
 
+  const sortedMeals = [...meals].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
   return (
     <PageWrapper gnbProps={gnbProps} extraComponents={{ hasFooter: false, hasBottomNavigation: true }}>
       <div className="p-4 bg-gray-100 text-white min-h-screen">
-        {meals.length === 0 ? (
+        {sortedMeals.length === 0 ? (
           <p className="text-center text-gray-500 mt-[5em]">No meals found.</p>
         ) : (
           <main className="space-y-6">
-            {meals.map((meal) => {
+            {sortedMeals.map((meal) => {
               /* Extract fields for card */
               const [datePart, timePart] = new Date(meal.created_at)
                 .toLocaleString([], { hour: "2-digit", minute: "2-digit", hour12: false })
@@ -51,7 +55,9 @@ const MealList: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <img src={MealImg} alt="Meal" className="w-[2.25em] h-[2.25em]" />
                     <div>
-                      <p className="font-semibold text-gray-950">Meal {meal.id}</p>
+                      <p className="font-semibold text-gray-950">
+                        {meal.dish_name ?? `Meal ${meal.id}`}
+                      </p>
                       <p className="text-sm text-gray-400">{timePart ?? datePart}</p>
                     </div>
                   </div>
