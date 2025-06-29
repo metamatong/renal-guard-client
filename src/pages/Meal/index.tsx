@@ -27,20 +27,15 @@ const MealList: React.FC = () => {
 
     (async () => {
       try {
-        const today = new Date();
-        const start = new Date(
-          today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0
-        ).toISOString();
-        const end   = new Date(
-          today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999
-        ).toISOString();
+        // current UTC time in ISO 8601 (e.g. "2025-06-29T06:12:30.123Z")
+        const timestamp = new Date().toISOString();
 
-        const url   =
-          `${import.meta.env.VITE_AWS_HISTORY_ENDPOINT}?` +
-          `uid=${user.id}&from=${encodeURIComponent(start)}&to=${encodeURIComponent(end)}`;
+        const url =
+          `${import.meta.env.VITE_AWS_HISTORY_ENDPOINT}` +
+          `?uid=${user.id}&timestamp=${encodeURIComponent(timestamp)}`;
 
-        const resp  = await fetch(url);
-        const json  = await resp.json();
+        const resp = await fetch(url);
+        const json = await resp.json();
         setMeals(Array.isArray(json.results) ? json.results : []);
       } catch (err) {
         console.error('[MealList] fetch failed', err);
