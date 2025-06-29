@@ -27,16 +27,23 @@ const MealList: React.FC = () => {
 
     (async () => {
       try {
-        // Using the Unix epoch as timestamp returns *all* rows on the backend
-        // (adjust if your API later supports arbitrary ranges).
-        const ts = new Date(0).toISOString();
-        const resp = await fetch(
-          `${import.meta.env.VITE_AWS_HISTORY_ENDPOINT}?uid=${user.id}&timestamp=${ts}`
-        );
-        const json = await resp.json();
+        const today = new Date();
+        const start = new Date(
+          today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0
+        ).toISOString();
+        const end   = new Date(
+          today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999
+        ).toISOString();
+
+        const url   =
+          `${import.meta.env.VITE_AWS_HISTORY_ENDPOINT}?` +
+          `uid=${user.id}&from=${encodeURIComponent(start)}&to=${encodeURIComponent(end)}`;
+
+        const resp  = await fetch(url);
+        const json  = await resp.json();
         setMeals(Array.isArray(json.results) ? json.results : []);
       } catch (err) {
-        console.error("[MealList] fetch failed", err);
+        console.error('[MealList] fetch failed', err);
       }
     })();
   }, [loading, user]);
