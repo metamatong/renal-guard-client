@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useAppSelector} from '@/store/hooks';
 import clsx from 'clsx';
@@ -7,6 +7,7 @@ import MealImg from '@/assets/meal-photo.png?as=src';
 
 const Result: React.FC = () => {
   const navigate = useNavigate();
+  const [secondsLeft, setSecondsLeft] = useState(8);
   const {result} = useAppSelector(state => state.scan);
 
   useEffect(() => {
@@ -17,15 +18,25 @@ const Result: React.FC = () => {
 
   useEffect(() => {
     if (result) {
-      const timer = setTimeout(() => navigate('/dashboard'), 8000);
-      return () => clearTimeout(timer);
+      setSecondsLeft(8);
+      const interval = setInterval(() => {
+        setSecondsLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            navigate('/dashboard');
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
     }
   }, [result, navigate]);
 
-  // parse API response
   const imgUrl = result?.imgUrl || MealImg;
-  const foods: string[] = result?.openAIResponse?.split('\n').filter(Boolean) || [];
-  const nutrients = result?.analysisResponse
+  const dishName = result?.dishName;
+  const ingredientsList: string[] = result?.ingredients?.split('\n').filter(Boolean) || [];
+  const nutrients = result?.analysis
     ?.split('\n')
     .filter(Boolean)
     .map((line: string) => {
@@ -46,22 +57,27 @@ const Result: React.FC = () => {
   return (
     <PageWrapper extraComponents={{hasFooter: false, hasBottomNavigation: false}}>
       <div className={clsx(
-        'flex flex-col flex-1 w-full min-h-[calc(100vh-256px)] items-center justify-start mt-[2em] px-4'
+        'flex flex-col flex-1 w-full min-h-[calc(100vh-256px)] items-center justify-start my-[2em] px-4'
       )}>
         <span className='mb-4 text-center text-[1.5em] text-gray-900 font-bold'>We’ve added <br /> this meal’s nutrition to <br /> your log successfully.</span>
 
-        <span className='mb-4 text-center text-[1em] text-gray-600 font-semibold'>Redirecting to your dashboard <br /> in just a moment...</span>
+        <span className='mb-4 text-center text-[1em] text-gray-600 font-semibold'>
+          Redirecting to your dashboard in {secondsLeft} second{secondsLeft !== 1 && 's'}...
+        </span>
 
         <div className='flex flex-col items-center text-center text-gray-900 bg-gray-100 rounded-[1em] p-6 space-y-4'>
           <img src={imgUrl} alt='Meal' className='w-full rounded-lg max-w-md mb-2' />
+          {dishName && (
+            <h2 className='mb-2 text-xl font-semibold text-gray-900'>{dishName}</h2>
+          )}
 
-          {/* Detected foods */}
-          {foods.length > 0 && (
+          {/* Ingredients */}
+          {ingredientsList.length > 0 && (
             <div className='w-full max-w-md text-left'>
-              <p className='mb-2 font-semibold'>Identified Foods</p>
+              <p className='mb-2 font-semibold'>Ingredients</p>
               <ul className='list-disc list-inside space-y-1'>
-                {foods.map((food: string) => (
-                  <li key={food} className='text-gray-800'>{food}</li>
+                {ingredientsList.map((item: string) => (
+                  <li key={item} className='text-gray-800'>{item}</li>
                 ))}
               </ul>
             </div>

@@ -11,6 +11,7 @@ export interface MealHistoryItem {
   phosphorus?: number;
   water?: number;
   calories?: number;
+  protein?: number;
   dish_name?: string;
 }
 
