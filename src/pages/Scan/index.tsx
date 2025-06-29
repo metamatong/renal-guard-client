@@ -68,7 +68,11 @@ const Scan: React.FC = () => {
 
       navigate('/processing');
       try {
-        await dispatch(uploadImageThunk(file)).unwrap();
+        if (user) {
+          await dispatch(uploadImageThunk({ file, uid: user.id })).unwrap();
+        } else {
+          console.error('[Scan] uploadImageThunk: missing user ID');
+        }
       } catch (err) {
         console.error('[Scan] uploadImageThunk failed:', err);
       }
@@ -84,7 +88,11 @@ const Scan: React.FC = () => {
 
     navigate('/processing');
     try {
-      await dispatch(uploadImageThunk(file)).unwrap();
+      if (user) {
+        await dispatch(uploadImageThunk({ file, uid: user.id })).unwrap();
+      } else {
+        console.error('[Scan] uploadImageThunk: missing user ID');
+      }
     } catch (err) {
       console.error('[Scan] uploadImageThunk failed:', err);
     }

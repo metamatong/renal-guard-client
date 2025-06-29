@@ -11,18 +11,19 @@ const baseURL = import.meta.env.VITE_AWS_ENDPOINT
 
 export const uploadImageThunk = createAsyncThunk<
   ScanResponse,
-  File,
+  { file: File; uid: string },
   { rejectValue: string }
 >(
   'scan/uploadImage',
-  async (file, thunkAPI) => {
+  async ({ file, uid }, thunkAPI) => {
     if (!baseURL) throw new Error('Missing VITE_AWS_ENDPOINT');
 
     const form = new FormData();
     form.append('file', file);
 
     try {
-      const { data } = await axios.post<ScanResponse>(baseURL, form, {
+      const url = `${baseURL}?uid=${encodeURIComponent(uid)}`;
+      const { data } = await axios.post<ScanResponse>(url, form, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       return data;
