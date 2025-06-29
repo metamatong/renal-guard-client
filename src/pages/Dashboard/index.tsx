@@ -11,38 +11,24 @@ import ArrowImg from '@/assets/right-arrow-button.png?as=src';
 import MealImg from '@/assets/meal-photo.png?as=src';
 
 
-const mockUserData = {
-  name: 'Kyle Cheon',
-  calories: 1253,
-  nutrients: {
-    sodium: 70,
-    potassium: 48,
-    phosphorus: 32,
-    water: 700,
-    protein: 40
-  },
-  meals: [
-    {id: 1, name: 'Chicken and Quinoa Bowl', time: '12:30 PM'},
-    {id: 2, name: 'Oatmeal with Berries', time: '8:00 AM'}
-  ],
-  dailyTipTitle: 'Drink, rinse, repeat.',
-  dailyTip:
-    'Staying hydrated is essential for dialysis. This simple act can wash away toxins, ' +
-    'prevent cramping, and help your body maintain a stable temperature. Aim for 8 glasses to give yourself a boost.',
-  reference: {
-    sodium: 2000,
-    potassium: 2000,
-    phosphorus: 1000,
-    water: 2000, // in ml
-    protein: 70 // in grams
-  }
+const dailyTipTitle = 'Drink, rinse, repeat.';
+const dailyTip =
+  'Staying hydrated is essential for dialysis. This simple act can wash away toxins, ' +
+  'prevent cramping, and help your body maintain a stable temperature. Aim for 8 glasses to give yourself a boost.';
+
+const reference = {
+  sodium: 2000,
+  potassium: 2000,
+  phosphorus: 1000,
+  water: 2000,
+  protein: 70
 };
 
 const toPercent = (val: number, ref: number) =>
   `${Math.min(100, (val / ref) * 100)}%`;
 
 const Dashboard: React.FC = () => {
-  const { user, loading } = useAuth();
+  const {user, loading} = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
     if (!loading && !user) {
@@ -51,6 +37,18 @@ const Dashboard: React.FC = () => {
   }, [loading, user, navigate]);
 
   const analysis = useAppSelector((state: RootState) => state.scan.result?.analysis);
+  const meals = useAppSelector((state: RootState) => state.history.meals);
+  const recentMeals = useMemo(
+    () =>
+      [...meals]
+        .sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() -
+            new Date(a.created_at).getTime()
+        )
+        .slice(0, 5),
+    [meals]
+  );
   const gnbProps = useMemo<GnbProps>(() => ({pageKind: 'logged-in'}), [user]);
 
   const todayStr = useMemo(
@@ -63,6 +61,20 @@ const Dashboard: React.FC = () => {
     []
   );
 
+  const totals = useMemo(() => {
+    return meals.reduce(
+      (acc, m) => ({
+        sodium: acc.sodium + (m.sodium ?? 0),
+        potassium: acc.potassium + (m.potassium ?? 0),
+        phosphorus: acc.phosphorus + (m.phosphorus ?? 0),
+        water: acc.water + (m.water ?? 0),
+        protein: acc.protein + 0, // protein not in API yet
+        calories: acc.calories + (m.calories ?? 0)
+      }),
+      {sodium: 0, potassium: 0, phosphorus: 0, water: 0, protein: 0, calories: 0}
+    );
+  }, [meals]);
+
   return (
     <PageWrapper gnbProps={gnbProps} extraComponents={{hasFooter: true, hasBottomNavigation: true}}>
       <div className='min-h-[calc(100vh-256px)] w-full bg-gray-100 text-gray-900'>
@@ -72,20 +84,8 @@ const Dashboard: React.FC = () => {
           <section className='mb-6 rounded-lg bg-gray-200 p-4'>
             <div className='flex justify-center gap-[2em] text-center'>
               {[
-                {
-                  key: 'sodium',
-                  symbol: 'Na',
-                  unit: 'mg',
-                  barColor: 'bg-gray-400',
-                  symbolColor: 'text-gray-700'
-                },
-                {
-                  key: 'potassium',
-                  symbol: 'K',
-                  unit: 'mg',
-                  barColor: 'bg-[#FEC77B]',
-                  symbolColor: 'text-[#FD6428]'
-                },
+                {key: 'sodium', symbol: 'Na', unit: 'mg', barColor: 'bg-gray-400', symbolColor: 'text-gray-700'},
+                {key: 'potassium', symbol: 'K', unit: 'mg', barColor: 'bg-[#FEC77B]', symbolColor: 'text-[#FD6428]'},
                 {
                   key: 'phosphorus',
                   symbol: 'PO\u2084',
@@ -93,25 +93,11 @@ const Dashboard: React.FC = () => {
                   barColor: 'bg-[#C8A6F1]',
                   symbolColor: 'text-[#2F12A4]'
                 },
-                {
-                  key: 'water',
-                  symbol: 'H\u2082O',
-                  unit: 'ml',
-                  barColor: 'bg-[#C4DDFF]',
-                  symbolColor: 'text-[#2875DA]'
-                },
-                {
-                  key: 'protein',
-                  symbol: 'Pro',
-                  unit: 'g',
-                  barColor: 'bg-[#E39F96]',
-                  symbolColor: 'text-[#7E352C]'
-                }
+                {key: 'water', symbol: 'H\u2082O', unit: 'ml', barColor: 'bg-[#C4DDFF]', symbolColor: 'text-[#2875DA]'},
+                {key: 'protein', symbol: 'Pro', unit: 'g', barColor: 'bg-[#E39F96]', symbolColor: 'text-[#7E352C]'}
               ].map(({key, symbol, unit, barColor, symbolColor}) => {
-                const value =
-                  mockUserData.nutrients[key as keyof typeof mockUserData.nutrients];
-                const ref =
-                  mockUserData.reference[key as keyof typeof mockUserData.reference];
+                const value = totals[key as keyof typeof totals];
+                const ref = reference[key as keyof typeof reference];
 
                 return (
                   <div key={key} className='flex w-[2.5em] flex-col items-center'>
@@ -147,16 +133,16 @@ const Dashboard: React.FC = () => {
 
             {/* total cals */}
             <div className='mt-4 mb-1 flex flex-col items-center justify-center'>
-              <p className='text-lg font-bold'>{mockUserData.calories} kcal</p>
+              <p className='text-lg font-bold'>{totals.calories} kcal</p>
               <p className='text-sm text-gray-500'>{todayStr}</p>
             </div>
           </section>
 
           {/* Today's Food Check-in */}
           <section className='flex flex-col gap-[0.5em] mb-6 rounded-lg bg-gray-200 p-4'>
-            <span className='mb-2 text-[1.25em] font-semibold'>Today&apos;s Food Check-in</span>
+            <span className='mb-2 text-[1.25em] font-semibold'>Today&#39;s Food Check-in</span>
             <div className='space-y-2'>
-              {mockUserData.meals.map((meal) => (
+              {recentMeals.map((meal: any) => (
                 <Link
                   key={meal.id}
                   to={`/meal/${meal.id}`}
@@ -178,8 +164,10 @@ const Dashboard: React.FC = () => {
                       )}
                     />
                     <div>
-                      <p className='font-semibold'>{meal.name}</p>
-                      <p className='text-sm text-gray-400'>{meal.time}</p>
+                      <p className='font-semibold'>{meal.dish_name ?? `Meal ${meal.id}`}</p>
+                      <p className='text-sm text-gray-400'>
+                        {new Date(meal.created_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
+                      </p>
                     </div>
                   </div>
                   <img
@@ -200,8 +188,8 @@ const Dashboard: React.FC = () => {
               Daily Renal Tips
             </span>
             <div className='rounded-lg bg-gray-200 p-4'>
-              <p className='text-gray-950 text-[1em] font-semibold mb-1'>{mockUserData.dailyTipTitle}</p>
-              <p className='text-gray-500'>{mockUserData.dailyTip}</p>
+              <p className='text-gray-950 text-[1em] font-semibold mb-1'>{dailyTipTitle}</p>
+              <p className='text-gray-500'>{dailyTip}</p>
             </div>
           </section>
 
