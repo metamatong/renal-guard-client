@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/authprovider/AuthContext.tsx';
 import clsx from 'clsx';
-import {ArrowLeft as ArrowBack, BellOff as NotificationOffIcon} from 'lucide-react';
+import {ArrowLeft as ArrowBack } from 'lucide-react';
 
 import LogoImg from '@/assets/logo-renalguard.png?as=src';
 
@@ -15,7 +15,7 @@ export type GnbProps = {
   rightIconAction?: () => void;
 };
 
-const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProps) => {
+const GlobalNavigationBar = ({ pageKind, prevAction }: GnbProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -60,25 +60,6 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
     }
   }, [pageKind, user?.user_metadata?.name, user?.email]);
 
-  /* ---------- RIGHT SLOT ---------- */
-  const rightNode = useMemo(() => {
-    if (pageKind === 'nested' && user && (user.user_metadata?.name || user.email))
-      return (
-        <button
-          // onClick={rightIconAction}
-          aria-label="notifications"
-          className={clsx(
-            'flex items-center justify-center',
-            rightIconAction && 'cursor-pointer'
-          )}
-        >
-          <NotificationOffIcon className="h-6 w-6" />
-        </button>
-      );
-
-    return null;
-  }, [pageKind, rightIconAction, user?.user_metadata?.name, user?.email]);
-
   /* ---------- render ---------- */
   return (
     <header
@@ -94,8 +75,6 @@ const GlobalNavigationBar = ({ pageKind, prevAction, rightIconAction, }: GnbProp
       {/* ← left slot */}
       <div className="flex min-w-[28px] items-center">{leftNode}</div>
 
-      {/* → right slot */}
-      <div className="flex min-w-[28px] items-center justify-end">{rightNode}</div>
     </header>
   );
 };

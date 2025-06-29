@@ -5,6 +5,7 @@ import Register from '@/pages/Register';
 import Confirm from '@/pages/Register/Confirm.tsx';
 import Scan from '@/pages/Scan';
 import Processing from '@/pages/Processing';
+import Result from '@/pages/Processing/Result.tsx';
 import Dashboard from '@/pages/Dashboard';
 import Meal from '@/pages/Meal';
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register/confirm" element={<Confirm />} />
         <Route path="/scan" element={<Scan />} />
         <Route path="/processing" element={<Processing />} />
+        <Route path="/result" element={<Result />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/meal/:mealId" element={<Meal />} />
         <Route path="*" element={<LandingPage />} />

@@ -10,10 +10,9 @@ const Processing: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // TODO: Replace this with actual API call to your backend
     const timer = setTimeout(() => {
       // Navigate to the Meal results page after processing
-      navigate('/dashboard');
+      navigate('/result');
     }, 4000); // 4-second delay for demonstration
 
     // Cleanup the timer if the component unmounts
