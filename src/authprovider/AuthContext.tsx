@@ -7,14 +7,15 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signUp: (inputs: AuthCredentials) => Promise<void>;
-  signIn: (inputs: { password: string; email: string }) => Promise<void>;
+  signIn: (inputs: AuthCredentials) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
 interface AuthCredentials {
   email: string;
   password: string;
-  username: string;
+  // optional for signUp; ignored by signIn
+  username?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
