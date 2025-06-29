@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useAppSelector} from '@/store/hooks';
 import clsx from 'clsx';
 import CancelImg from '@/assets/cancel-button.png?as=src';
 import LoadingImg from '@/assets/loading-image.png?as=src';
@@ -8,16 +9,13 @@ import PageWrapper from '@/components/layouts/PageWrapper';
 
 const Processing: React.FC = () => {
   const navigate = useNavigate();
+  const {status, result} = useAppSelector(state => state.scan);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      // Navigate to the Meal results page after processing
+    if (status === 'idle' && result) {
       navigate('/result');
-    }, 4000); // 4-second delay for demonstration
-
-    // Cleanup the timer if the component unmounts
-    return () => clearTimeout(timer);
-  }, [navigate]);
+    }
+  }, [status, result, navigate]);
 
   return (
     <PageWrapper extraComponents={{ hasFooter: false, hasBottomNavigation: false }}>
