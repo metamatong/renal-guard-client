@@ -78,7 +78,7 @@ const Dashboard: React.FC = () => {
         potassium: acc.potassium + (m.potassium ?? 0),
         phosphorus: acc.phosphorus + (m.phosphorus ?? 0),
         water: acc.water + (m.water ?? 0),
-        protein: acc.protein + 0,
+        protein: acc.protein + (m.protein ?? 0),
         calories: acc.calories + (m.calories ?? 0)
       }),
       {sodium: 0, potassium: 0, phosphorus: 0, water: 0, protein: 0, calories: 0}
