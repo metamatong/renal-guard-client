@@ -63,7 +63,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       },
     });
-    // const { error } = await supabase.auth.signUp(inputs);
     if (error) throw error;
   };
 

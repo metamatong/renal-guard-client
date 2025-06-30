@@ -27,7 +27,6 @@ const GlobalNavigationBar = ({ pageKind, prevAction }: GnbProps) => {
     switch (pageKind) {
       case 'landing':
         return (
-          // TODO: The link should first figure out signin state and navigate to dashboard if signed in.
           <Link to="/" aria-label="Home">
             <img
               src={LogoImg}

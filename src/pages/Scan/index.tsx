@@ -23,7 +23,7 @@ const Scan: React.FC = () => {
   // keep a handle so we can stop the camera later
   const streamRef = useRef<MediaStream | null>(null);
 
-  /* ─────────── 1 ▹ turn the camera on when the page mounts ─────────── */
+  // turn the camera on when the page mounts
   useEffect(() => {
     if (!loading && !user) {
       navigate('/signin');
@@ -50,7 +50,7 @@ const Scan: React.FC = () => {
     };
   }, []);
 
-  /* ─────────── 2 ▹ take a snapshot ─────────── */
+  // take a snapshot
   const handleScan = async () => {
     const video = videoRef.current;
     if (!video) return;
@@ -79,7 +79,7 @@ const Scan: React.FC = () => {
     }, 'image/png');
   };
 
-  /* ─────────── 3 ▹ gallery upload fallback ─────────── */
+  // gallery upload fallback
   const handleUpload = () => fileInputRef.current?.click();
 
   const onFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
