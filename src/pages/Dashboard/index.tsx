@@ -202,14 +202,6 @@ const Dashboard: React.FC = () => {
               <p className='text-gray-500'>{dailyTip}</p>
             </div>
           </section>
-
-          {/* Analysis from last scan */}
-          {analysis && (
-            <section className='mb-6 rounded-lg bg-gray-200 p-4'>
-              <span className='mb-2 text-[1.25em] font-semibold'>Analysis</span>
-              <div className='whitespace-pre-wrap text-gray-700'>{analysis}</div>
-            </section>
-          )}
         </main>
       </div>
     </PageWrapper>
