@@ -13,6 +13,7 @@ const MealList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { meals, status, error } = useAppSelector(state => state.history);
+  const scanResult = useAppSelector(state => state.scan.result);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -49,11 +50,15 @@ const MealList: React.FC = () => {
                 .toLocaleString([], { hour: "2-digit", minute: "2-digit", hour12: false })
                 .split(" ");
 
+              const imgUrl =
+                meal.id === scanResult?.id
+                  ? scanResult.imgUrl
+                  : meal.img_url ?? MealImg;
               return (
                 <section key={meal.id} className="rounded-lg bg-gray-200 p-4">
                   {/* Header */}
                   <div className="flex items-center gap-2">
-                    <img src={MealImg} alt="Meal" className="w-[2.25em] h-[2.25em]" />
+                    <img src={imgUrl} alt="Meal" className="w-[2.25em] h-[2.25em]" />
                     <div>
                       <p className="font-semibold text-gray-950">
                         {meal.dish_name ?? `Meal ${meal.id}`}

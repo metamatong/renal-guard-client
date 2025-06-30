@@ -13,6 +13,8 @@ export interface MealHistoryItem {
   calories?: number;
   protein?: number;
   dish_name?: string;
+  img_url?: string;
+  img_url?: string;
 }
 
 interface HistoryState {
