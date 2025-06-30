@@ -39,7 +39,6 @@ const Dashboard: React.FC = () => {
     return dailyRenalTips[index];
   }, []);
 
-  const analysis = useAppSelector((state: RootState) => state.scan.result?.analysis);
   const meals = useAppSelector((state: RootState) => state.history.meals);
   const recentMeals = useMemo(
     () =>
