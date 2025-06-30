@@ -59,7 +59,7 @@ const Processing: React.FC = () => {
 
           {/* Random renal tip to lighten the wait */}
           <div className="mt-6 w-full max-w-md rounded-lg bg-gray-200 p-4 text-center">
-            <p className="mb-2 text-gray-600 text-lg font-semibold">Quick Renal Tip: {tipTitle}</p>
+            <p className="mb-2 text-gray-600 text-lg font-semibold">Quick Renal Tip: <br /> {tipTitle}</p>
             <p className="text-sm text-gray-700">{tipText}</p>
           </div>
         </div>
