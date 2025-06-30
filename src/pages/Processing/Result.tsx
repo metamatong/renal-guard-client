@@ -51,7 +51,7 @@ const Result: React.FC = () => {
     phosphorus: {symbol: 'PO\u2084', bg: 'bg-[#C8A6F1]', text: 'text-[#2F12A4]'},
     water: {symbol: 'H\u2082O', bg: 'bg-[#C4DDFF]', text: 'text-[#2875DA]'},
     protein: {symbol: 'Protein', bg: 'bg-[#E39F96]', text: 'text-[#7E352C]'},
-    calories: {symbol: 'kcal', bg: 'border-blue-950', text: 'text-blue-950'}
+    calories: {symbol: 'Calorie', bg: 'border-blue-950', text: 'text-blue-950'}
   };
 
   return (
